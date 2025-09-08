@@ -105,11 +105,17 @@ int main()
 	//standardObject indexBufferTest;
 	//indexBufferTest.addData(testArray, 12 * sizeof(float), testArray2, 6 * sizeof(unsigned int));
 
+
+	//MAKE SURE TO CHANGE TRIANGLE DEGREES IN BOTH clacCircleVBufferSize and genCircle func or it will cause memory problems
 	int vBufferSize = calcCircleVBufferSize(6.0f);
 	float* testArray3 = new float[vBufferSize] {0};
 	unsigned int* testArray4 = new unsigned int[vBufferSize - 3] {0};
-	//int renderedVertecies = 0;
-	genCircle(testArray3, testArray4, 6.0, 1.0f, 0.0f, 0.0f);
+	genCircle(testArray3, testArray4, 6.0f, 0.5f, 0.0f, 0.0f);
+
+	int vBufferSize2 = calcCircleVBufferSize(7.5f);
+	float* testArray1 = new float[vBufferSize2] {0};
+	unsigned int* testArray2 = new unsigned int[vBufferSize2 - 3] {0};
+	genCircle(testArray1, testArray2, 7.5f, 0.5f, -1.0f, 0.0f);
 
 	for (int i = 1; i < vBufferSize + 1; i++)
 	{
@@ -133,6 +139,9 @@ int main()
 
 	standardObject circleObject;
 	circleObject.addData(testArray3, vBufferSize * sizeof(float), testArray4, (vBufferSize - 3) * sizeof(unsigned int));
+
+	standardObject circleObject2;
+	circleObject2.addData(testArray1, vBufferSize2 * sizeof(float), testArray2, (vBufferSize2 - 3) * sizeof(unsigned int));
 
 	/*
 	unsigned int vbo, vao;
@@ -165,6 +174,7 @@ int main()
 		//newObject.Draw(3);
 		//anotherObject.Draw(6);
 		circleObject.Draw();
+		circleObject2.Draw();
 		//indexBufferTest.Draw();
 
 		/* Swap front and back buffers */
@@ -174,6 +184,8 @@ int main()
 		glfwPollEvents();
 	}
 
+	delete[] testArray1;
+	delete[] testArray2;
 	delete[] testArray4;
 	delete[] testArray3;
 
