@@ -1,6 +1,6 @@
 #include <glew.h>
 #include <glfw3.h>
-#include "stb_image.h"
+#include "stb_image/stb_image.h"
 
 #include <iostream>
 #include <string>
