@@ -46,24 +46,30 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 
 void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 {
-	int vBufferSize = calcCircleVBufferSize(degreesPerTriangle);
-	vertexBuffer = new float[vBufferSize] {0};
-	elementBuffer = new unsigned int[vBufferSize - 3] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
-	genCircle(vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
-	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-	addData(vertexBuffer, vBufferSize * sizeof(float), elementBuffer, (vBufferSize - 3) * sizeof(unsigned int));
+	if (!textured)
+	{
+		int vBufferSize = calcCircleVBufferSize(degreesPerTriangle);
+		vertexBuffer = new float[vBufferSize] {0};
+		elementBuffer = new unsigned int[vBufferSize - 3] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
+		genCircle(vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
+		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
+		addData(vertexBuffer, vBufferSize * sizeof(float), elementBuffer, (vBufferSize - 3) * sizeof(unsigned int));
+	}
 }
 
 void standardObject::MakeSquare(float width, float height)
 {
-	vertexBuffer = new float[12] {0};
-	elementBuffer = new unsigned int[6] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
-	genSquare(vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
-	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-	addData(vertexBuffer, 12 * sizeof(float), elementBuffer, 6 * sizeof(unsigned int));
+	if (!textured)
+	{
+		vertexBuffer = new float[12] {0};
+		elementBuffer = new unsigned int[6] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
+		genSquare(vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
+		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
+		addData(vertexBuffer, 12 * sizeof(float), elementBuffer, 6 * sizeof(unsigned int));
+	}
 }
 
-void standardObject::Draw()
+void standardObject::Draw() const
 {
 	//bindime ajutiselt shaderid siin kuni ma mingi parema asja valja motlen
 	//aga seda siis kui me sinna jouame

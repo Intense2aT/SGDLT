@@ -13,7 +13,7 @@ public:
 	unsigned int* elementBuffer; //indeks buffer
 
 	int amountDrawn;
-	bool textured;
+	const bool textured;
 
 	standardObject(float x_position, float y_position, bool isTextured = false);
 	~standardObject();
@@ -33,7 +33,7 @@ public:
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
 	void MakeSquare(float width, float height); //implement soon its not hard
 
-	void Draw();
+	void Draw() const;
 
 	//void BindObject(); likely decommisioned, we bind on draw
 };
