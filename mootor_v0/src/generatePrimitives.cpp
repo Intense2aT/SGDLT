@@ -4,8 +4,7 @@
 #include "generatePrimitives.h"
 
 //always returns an array with 12 floats to targetArray 4 * {x, y, z}
-//index array passed to the function should always have a 6 float allocation
-//starts at [0, 0] on opengl cordinates by default if no x or y positions are specified
+//index array passed to the function should always have a 6 uint allocation
 void genSquare(float* vertexArray, unsigned int* indexArray, float width, float height, float xpos, float ypos)
 {
 	float* Square = new float[12];
@@ -53,13 +52,7 @@ int calcCircleVBufferSize(float degreesPerTriangle)
 //target array should equal 3*output of calcTriangleCount() in order to fit x, y and z
 void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegrees, float radius, float xpos, float ypos)
 {
-	std::cout << radius << " " << xpos << " " << ypos << " " << triangleDegrees << std::endl;
-
-	//float prevX = xpos;
-	//float prevY = ypos + radius;
-
 	int triangles = (int)(360 / triangleDegrees);
-	//std::cout << triangles << std::endl;
 	float angle = 3.1415f * 2.0f / triangles; //calculating radians
 	//currently need to write 1 point per loop
 
@@ -69,7 +62,7 @@ void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegre
 
 	for (int i = 1; i < triangles + 1; i++)
 	{
-		float nextAngle = angle * i; //(i + 1)
+		float nextAngle = angle * i; 
 		vertexArray[3 * i] = xpos + radius * sin(nextAngle);
 		vertexArray[3 * i + 1] = ypos + radius * cos(nextAngle);
 		vertexArray[3 * i + 2] = 1.0f;

@@ -54,9 +54,13 @@ void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 	addData(vertexBuffer, vBufferSize * sizeof(float), elementBuffer, (vBufferSize - 3) * sizeof(unsigned int));
 }
 
-void standardObject::MakeSquare()
+void standardObject::MakeSquare(float width, float height)
 {
-
+	vertexBuffer = new float[12] {0};
+	elementBuffer = new unsigned int[6] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
+	genSquare(vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
+	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
+	addData(vertexBuffer, 12 * sizeof(float), elementBuffer, 6 * sizeof(unsigned int));
 }
 
 void standardObject::Draw()

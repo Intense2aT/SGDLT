@@ -94,8 +94,8 @@ int main()
 	standardObject circleObject(0.0f, 0.0f);
 	circleObject.MakeCircle(0.5f);
 
-	standardObject circleObject2(-1.0f, 0.0f);
-	circleObject2.MakeCircle(0.5f);
+	standardObject squareObject(0.0f, -0.5f);
+	squareObject.MakeSquare(0.5f, 1.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -109,7 +109,7 @@ int main()
 		SetDrawingColor(color1);
 		circleObject.Draw();
 		SetDrawingColor(color2);
-		circleObject2.Draw();
+		squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

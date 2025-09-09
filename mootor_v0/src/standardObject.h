@@ -31,7 +31,7 @@ public:
 
 	//MakeCircle uses 5 degrees per triangle by default because it looked nice at 6.0f but i want to give some leeway
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
-	void MakeSquare(); //implement soon its not hard
+	void MakeSquare(float width, float height); //implement soon its not hard
 
 	void Draw();
 
