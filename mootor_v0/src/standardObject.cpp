@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "standardObject.h"
+#include "generatePrimitives.h"
 
 standardObject::standardObject(bool isTextured)
 	:amountDrawn(0), textured(isTextured)
@@ -15,7 +16,6 @@ standardObject::~standardObject()
 {
 
 }
-
 
 void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
 {
@@ -58,10 +58,3 @@ void standardObject::Draw()
 
 	}
 }
-
-/*
-void standardObject::BindObject()
-{
-	glBindVertexArray(VArray);
-}
-*/
