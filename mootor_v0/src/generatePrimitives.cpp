@@ -1,7 +1,6 @@
 #include <iostream>
 #include <math.h>
 
-//#include "standardObject.h"
 #include "generatePrimitives.h"
 
 //always returns an array with 12 floats to targetArray 4 * {x, y, z}

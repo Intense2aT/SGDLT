@@ -5,8 +5,9 @@ class standardObject
 public:
 	unsigned int VBuffer, EBuffer, VArray;
 	int amountDrawn;
+	bool textured;
 
-	standardObject();
+	standardObject(bool isTextured = false);
 	~standardObject();
 	
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);

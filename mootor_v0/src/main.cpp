@@ -9,6 +9,9 @@
 #include "generatePrimitives.h"
 
 int width, height;
+int colorUniform;
+
+void SetDrawingColor(float* color);
 
 int main()
 {
@@ -43,18 +46,16 @@ int main()
 
 	const char* vertexShader = "#version 330\n"
 		"layout(location = 0) in vec3 pCords;\n"
-		"layout(location = 1) in vec3 colorInfo;\n"
 		"out vec3 colors;\n"
 		"void main() {\n"
 		"	gl_Position = vec4(pCords, 1.0f);\n"
-		"	colors = colorInfo;\n"
 		"}\0";
 
 	const char* fragmentShader = "#version 330\n"
 		"out vec4 color;\n"
-		"in vec3 colors;\n"
+		"uniform vec4 colors;\n"
 		"void main() {\n"
-		"	color = vec4(0.5f, 0.1f, 0.7f, 1.0f);\n"
+		"	color = colors;\n"
 		"}\0";
 
 	unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
@@ -117,6 +118,11 @@ int main()
 	unsigned int* testArray2 = new unsigned int[vBufferSize2 - 3] {0};
 	genCircle(testArray1, testArray2, 7.5f, 0.5f, -1.0f, 0.0f);
 
+	int colorUniform = glGetUniformLocation(shaderProgram, "colors\0");
+	//GLint color[4] = {0.5f, 1.0f, 1.0f, 1.0f};
+	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+
 	for (int i = 1; i < vBufferSize + 1; i++)
 	{
 		std::cout << *(testArray3 + i - 1) << " ";
@@ -173,7 +179,9 @@ int main()
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		//newObject.Draw(3);
 		//anotherObject.Draw(6);
+		SetDrawingColor(color1);
 		circleObject.Draw();
+		SetDrawingColor(color2);
 		circleObject2.Draw();
 		//indexBufferTest.Draw();
 
@@ -193,4 +201,9 @@ int main()
 
 	system("pause");
 	return 0;
+}
+
+void SetDrawingColor(float *color)
+{
+	glUniform4f(colorUniform, color[0], color[1], color[2], color[3]);
 }
