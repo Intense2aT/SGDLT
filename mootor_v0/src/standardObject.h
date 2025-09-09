@@ -3,15 +3,23 @@
 class standardObject
 {
 private:
+	float originPosition[2];
+
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
 public:
 	unsigned int VBuffer, EBuffer, VArray;
+
+	float* vertexBuffer;
+	unsigned int* elementBuffer; //indeks buffer
+
 	int amountDrawn;
 	bool textured;
 
-	standardObject(bool isTextured = false);
+	standardObject(float x_position, float y_position, bool isTextured = false);
 	~standardObject();
-	
+
+	//float* getOriginPosition();
+
 	// instead of doing everything manually outside, lets make it really simple and do it in the object
 	// code should look like:
 	// 
@@ -21,10 +29,10 @@ public:
 	// then in loop
 	// Object.Draw();
 
-	void MakeCircle();
-	void MakeSquare();
+	//MakeCircle uses 5 degrees per triangle by default because it looked nice at 6.0f but i want to give some leeway
+	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
+	void MakeSquare(); //implement soon its not hard
 
-	//void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
 	void Draw();
 
 	//void BindObject(); likely decommisioned, we bind on draw

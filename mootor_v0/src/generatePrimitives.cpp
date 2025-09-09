@@ -53,6 +53,7 @@ int calcCircleVBufferSize(float degreesPerTriangle)
 //target array should equal 3*output of calcTriangleCount() in order to fit x, y and z
 void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegrees, float radius, float xpos, float ypos)
 {
+	std::cout << radius << " " << xpos << " " << ypos << " " << triangleDegrees << std::endl;
 
 	//float prevX = xpos;
 	//float prevY = ypos + radius;
@@ -76,12 +77,25 @@ void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegre
 		indexArray[3 * (i - 1)] = 0;
 		indexArray[3 * (i - 1) + 1] = i;
 		indexArray[3 * (i - 1) + 2] = (i + 1 > triangles) ? 1 : i + 1;
-		
-		/*
-		std::cout << targetArray[9 * i] << " " << targetArray[9 * i + 1] << " " << targetArray[9 * i + 2] << std::endl;
-		std::cout << targetArray[9 * i + 3] << " " << targetArray[9 * i + 4] << " " << targetArray[9 * i + 5] << std::endl;
-		std::cout << targetArray[9 * i + 6] << " " << targetArray[9 * i + 7] << " " << targetArray[9 * i + 8] << std::endl;
-		std::cout << std::endl;
-		*/
 	}
+
+	/*
+	for (int i = 1; i < vBufferSize + 1; i++)
+	{
+		std::cout << *(testArray3 + i - 1) << " ";
+		if (i % 3 == 0)
+		{
+			std::cout << std::endl;
+		}
+	}
+
+	for (int i = 1; i < vBufferSize - 2; i++)
+	{
+		std::cout << *(testArray4 + i - 1) << " ";
+		if (i % 3 == 0)
+		{
+			std::cout << std::endl;
+		}
+	}
+	*/
 }

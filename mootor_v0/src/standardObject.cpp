@@ -4,8 +4,8 @@
 #include "standardObject.h"
 #include "generatePrimitives.h"
 
-standardObject::standardObject(bool isTextured)
-	:amountDrawn(0), textured(isTextured)
+standardObject::standardObject(float x_position, float y_position, bool isTextured)
+	:originPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0)
 {
 	glGenVertexArrays(1, &VArray);
 	glGenBuffers(1, &VBuffer);
@@ -14,7 +14,9 @@ standardObject::standardObject(bool isTextured)
 
 standardObject::~standardObject()
 {
-
+	delete[] vertexBuffer;
+	delete[] elementBuffer;
+	std::cout << "memory freed?" << std::endl;
 }
 
 void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
@@ -32,8 +34,6 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		//glEnableVertexAttribArray(1);
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -42,6 +42,21 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 	{
 		//set it up as textured
 	}
+}
+
+void standardObject::MakeCircle(float radius, float degreesPerTriangle)
+{
+	int vBufferSize = calcCircleVBufferSize(degreesPerTriangle);
+	vertexBuffer = new float[vBufferSize] {0};
+	elementBuffer = new unsigned int[vBufferSize - 3] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
+	genCircle(vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
+	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
+	addData(vertexBuffer, vBufferSize * sizeof(float), elementBuffer, (vBufferSize - 3) * sizeof(unsigned int));
+}
+
+void standardObject::MakeSquare()
+{
+
 }
 
 void standardObject::Draw()

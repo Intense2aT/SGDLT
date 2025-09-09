@@ -87,88 +87,15 @@ int main()
 		 0.5f, -0.5f, 1.0f, //0.0f, 0.0f, 1.0f
 	};
 
-	//float* testArray = new float[12] {0};
-	//unsigned int* testArray2 = new unsigned int[6] {0};
-	//genSquare(testArray, testArray2, 0.5f, 0.5f, -1.0, -1.0);
-
-	//for (int i = 0; i < 12; i++)
-	//{
-	//	std::cout << *(testArray + i) << std::endl;
-	//}
-
-	//std::cout << std::endl << std::endl << std::endl;
-
-	//for (int i = 0; i < 6; i++)
-	//{
-		//std::cout << *(testArray2 + i) << std::endl;
-	//}
-
-	//standardObject indexBufferTest;
-	//indexBufferTest.addData(testArray, 12 * sizeof(float), testArray2, 6 * sizeof(unsigned int));
-
-
-	//MAKE SURE TO CHANGE TRIANGLE DEGREES IN BOTH clacCircleVBufferSize and genCircle func or it will cause memory problems
-	int vBufferSize = calcCircleVBufferSize(6.0f);
-	float* testArray3 = new float[vBufferSize] {0};
-	unsigned int* testArray4 = new unsigned int[vBufferSize - 3] {0};
-	genCircle(testArray3, testArray4, 6.0f, 0.5f, 0.0f, 0.0f);
-
-	int vBufferSize2 = calcCircleVBufferSize(7.5f);
-	float* testArray1 = new float[vBufferSize2] {0};
-	unsigned int* testArray2 = new unsigned int[vBufferSize2 - 3] {0};
-	genCircle(testArray1, testArray2, 7.5f, 0.5f, -1.0f, 0.0f);
-
 	int colorUniform = glGetUniformLocation(shaderProgram, "colors\0");
-	//GLint color[4] = {0.5f, 1.0f, 1.0f, 1.0f};
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	for (int i = 1; i < vBufferSize + 1; i++)
-	{
-		std::cout << *(testArray3 + i - 1) << " ";
-		if (i % 3 == 0)
-		{
-			std::cout << std::endl;
-		}
-	}
+	standardObject circleObject(0.0f, 0.0f);
+	circleObject.MakeCircle(0.5f);
 
-	for (int i = 1; i < vBufferSize - 2; i++)
-	{
-		std::cout << *(testArray4 + i - 1) << " ";
-		if (i % 3 == 0)
-		{
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << vBufferSize * sizeof(float) + (vBufferSize - 3) + sizeof(unsigned int) << std::endl;
-
-	standardObject circleObject;
-	circleObject.addData(testArray3, vBufferSize * sizeof(float), testArray4, (vBufferSize - 3) * sizeof(unsigned int));
-
-	standardObject circleObject2;
-	circleObject2.addData(testArray1, vBufferSize2 * sizeof(float), testArray2, (vBufferSize2 - 3) * sizeof(unsigned int));
-
-	/*
-	unsigned int vbo, vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	*/
-
-	//standardObject anotherObject;
-	//anotherObject.addData(testArray, 18 * sizeof(float));
-	//anotherObject.BindObject();
-
-	//standardObject newObject;
-	//newObject.addData(positions, 18 * sizeof(float));
-	//newObject.BindObject();
+	standardObject circleObject2(-1.0f, 0.0f);
+	circleObject2.MakeCircle(0.5f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -183,7 +110,6 @@ int main()
 		circleObject.Draw();
 		SetDrawingColor(color2);
 		circleObject2.Draw();
-		//indexBufferTest.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -191,11 +117,6 @@ int main()
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
-
-	delete[] testArray1;
-	delete[] testArray2;
-	delete[] testArray4;
-	delete[] testArray3;
 
 	glfwTerminate();
 
