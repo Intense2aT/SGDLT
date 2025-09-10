@@ -6,5 +6,6 @@ class shaderManager
 private:
 
 public:
-
+	shaderManager();
+	~shaderManager();
 };
