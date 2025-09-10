@@ -1,4 +1,6 @@
 #include <glew.h>
+#include "stb_image/stb_image.h"
+
 #include <iostream>
 
 #include "standardObject.h"

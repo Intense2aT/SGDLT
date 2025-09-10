@@ -136,12 +136,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\generatePrimitives.cpp" />
+    <ClCompile Include="src\initit.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\shaderLoader.cpp" />
     <ClCompile Include="src\standardObject.cpp" />
     <ClCompile Include="src\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\generatePrimitives.h" />
+    <ClInclude Include="src\initit.h" />
+    <ClInclude Include="src\shaderLoader.h" />
     <ClInclude Include="src\standardObject.h" />
     <ClInclude Include="src\stb_image\stb_image.h" />
   </ItemGroup>

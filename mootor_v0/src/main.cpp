@@ -1,8 +1,10 @@
 #include <glew.h>
 #include <glfw3.h>
-#include "stb_image/stb_image.h"
+
+#include "initit.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "standardObject.h"
@@ -15,31 +17,16 @@ void SetDrawingColor(float* color);
 
 int main()
 {
-	if (!glfwInit())
-	{
-		return -1;
-	}
+	mootor mootor;
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
-	if (!window)
-	{
-		return -2;
-	}
+	mootor.MakeWindow(800, 600, "Window Title");
 
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
+	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << " user resized window" << std::endl;  });
-
-	if (glewInit() != GLEW_OK)
-	{
-		std::cout << "glew not working" << std::endl;
-		system("pause");
-		return -3;
-	}
 
 	int success;
 	char infoLog[512];
@@ -81,12 +68,6 @@ int main()
 	//glDeleteShader(vs);
 	//glDeleteShader(fs);
 
-	float positions[18] = {
-		-0.5f, -0.5f, 1.0f, //1.0f, 0.0f, 0.0f,
-		 0.0f,  0.5f, 1.0f, //0.0f, 1.0f, 0.0f,
-		 0.5f, -0.5f, 1.0f, //0.0f, 0.0f, 1.0f
-	};
-
 	int colorUniform = glGetUniformLocation(shaderProgram, "colors\0");
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -97,30 +78,26 @@ int main()
 	standardObject squareObject(0.0f, -0.5f);
 	squareObject.MakeSquare(0.5f, 1.0f);
 
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(mootor.window))
 	{
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		//newObject.Draw(3);
-		//anotherObject.Draw(6);
 		SetDrawingColor(color1);
 		circleObject.Draw();
 		SetDrawingColor(color2);
 		squareObject.Draw();
 
 		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(mootor.window);
 
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
 
-	glfwTerminate();
+	mootor.kill();
 
-	system("pause");
 	return 0;
 }
 
