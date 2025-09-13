@@ -4,11 +4,11 @@
 #include "initit.h"
 
 #include <iostream>
-#include <fstream>
 #include <string>
 
 #include "standardObject.h"
 #include "generatePrimitives.h"
+#include "shaderLoader.h"
 
 int width, height;
 int colorUniform;
@@ -28,47 +28,13 @@ int main()
 	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << " user resized window" << std::endl;  });
 
-	int success;
-	char infoLog[512];
+	shaderManager base;
+	base.UseBaseShaders();
+	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
+	//base.CreateProgram();
+	//base.UseProgram();
 
-	const char* vertexShader = "#version 330\n"
-		"layout(location = 0) in vec3 pCords;\n"
-		"out vec3 colors;\n"
-		"void main() {\n"
-		"	gl_Position = vec4(pCords, 1.0f);\n"
-		"}\0";
-
-	const char* fragmentShader = "#version 330\n"
-		"out vec4 color;\n"
-		"uniform vec4 colors;\n"
-		"void main() {\n"
-		"	color = colors;\n"
-		"}\0";
-
-	unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vs, 1, &vertexShader, NULL);
-	glCompileShader(vs);
-
-	unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fs, 1, &fragmentShader, NULL);
-	glCompileShader(fs);
-
-	unsigned int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vs);
-	glAttachShader(shaderProgram, fs);
-	glLinkProgram(shaderProgram);
-	glUseProgram(shaderProgram);
-
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	//glDeleteShader(vs);
-	//glDeleteShader(fs);
-
-	int colorUniform = glGetUniformLocation(shaderProgram, "colors\0");
+	int colorUniform = glGetUniformLocation(base.program, "colors\0");
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
@@ -96,8 +62,8 @@ int main()
 		glfwPollEvents();
 	}
 
-	mootor.kill();
-
+	base.Destroy();
+	mootor.Destroy();
 	return 0;
 }
 

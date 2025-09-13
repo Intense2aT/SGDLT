@@ -12,5 +12,5 @@ public:
 
 	void MakeWindow(int width, int height, const char* windowTitle);
 
-	void kill();
+	void Destroy();
 };

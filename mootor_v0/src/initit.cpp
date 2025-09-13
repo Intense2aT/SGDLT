@@ -34,7 +34,7 @@ void mootor::MakeWindow(int width, int height, const char* windowTitle)
 	}
 }
 
-void mootor::kill()
+void mootor::Destroy()
 {
 	this->~mootor();
 }
