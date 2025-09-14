@@ -10,10 +10,13 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
-int width, height;
+int width = 800, height = 600;
 int colorUniform;
 
 void SetDrawingColor(float* color);
+//cant be bothered to texture right now so will do conversion from pixel to opengl cordinates
+//type is 'H' for height conversion and 'W' for width conversion
+float pixelToGLCords(int position, char type); 
 
 int main()
 {
@@ -23,7 +26,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	mootor.MakeWindow(800, 600, "Window Title");
+	mootor.MakeWindow(width, height, "Window Title");
 
 	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << " user resized window" << std::endl;  });
@@ -38,7 +41,7 @@ int main()
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	standardObject circleObject(0.0f, 0.0f);
+	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'));
 	circleObject.MakeCircle(0.5f);
 
 	standardObject squareObject(0.0f, -0.5f);
@@ -70,4 +73,16 @@ int main()
 void SetDrawingColor(float *color)
 {
 	glUniform4f(colorUniform, color[0], color[1], color[2], color[3]);
+}
+
+float pixelToGLCords(int position, char type)
+{
+	if (type == 'H')
+	{
+		return position / ((float)height / 2.0f) - 1.0f;
+	}
+	else if (type == 'W')
+	{
+		return position / ((float)width / 2.0f) - 1.0f;
+	}
 }
