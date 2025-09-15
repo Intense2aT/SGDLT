@@ -20,7 +20,7 @@ mootor::~mootor()
 
 void mootor::MakeWindow(int width, int height, const char* windowTitle)
 {
-	window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+	window = glfwCreateWindow(width, height, windowTitle, NULL, NULL);
 	if (!window)
 	{
 		std::cout << "no window" << std::endl;

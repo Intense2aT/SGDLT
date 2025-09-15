@@ -64,8 +64,8 @@ shaderManager::~shaderManager()
 
 void shaderManager::UseBaseShaders()
 {
-	LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/vertexShader1.shader", 'V');
-	LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/fragmentShader1.shader", 'F');
+	LoadShader("src/shaders/vertexShader1.shader", 'V');
+	LoadShader("src/shaders/fragmentShader1.shader", 'F');
 	CreateProgram();
 	UseProgram();
 }
