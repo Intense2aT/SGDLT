@@ -55,7 +55,8 @@ void standardObject::addTexture()
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load("C:/dev_kaust/mootor_v0/mootor_v0/src/textures/testTextureMaxwell.jpg", &width, &height, &nrChannels, 0);
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* data = stbi_load("C:/dev_kaust/mootor_v0/mootor_v0/src/textures/test.jpg", &width, &height, &nrChannels, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
