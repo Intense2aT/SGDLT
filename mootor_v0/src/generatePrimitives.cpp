@@ -50,10 +50,14 @@ int calcCircleVBufferSize(float degreesPerTriangle)
 }
 
 //target array should equal 3*output of calcTriangleCount() in order to fit x, y and z
-void genCircle(float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos)
+bufferSizeStore genCircle(float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos)
 {
-	vertexArray = new float[calcCircleVBufferSize(triangleDegrees)] {0};
-	indexArray = new unsigned int[calcCircleVBufferSize(triangleDegrees) - 3] {0};
+	bufferSizeStore bufferSizes;
+	bufferSizes.vertexBufferSize = calcCircleVBufferSize(triangleDegrees);
+	bufferSizes.elementBufferSize = bufferSizes.vertexBufferSize - 3;
+
+	vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+	indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
 
 	int triangles = (int)(360 / triangleDegrees);
 	float angle = 3.1415f * 2.0f / triangles; //calculating radians
@@ -93,4 +97,6 @@ void genCircle(float*& vertexArray, unsigned int*& indexArray, float triangleDeg
 			std::cout << std::endl;
 		}
 	}
+
+	return bufferSizes;
 }
