@@ -44,7 +44,7 @@ int main()
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'), true);
-	circleObject.MakeCircle(0.6f, 30.0f);
+	circleObject.MakeCircle(0.5f, 90.0f);
 	circleObject.addTexture();
 
 	//standardObject squareObject(0.0f, -0.5f);

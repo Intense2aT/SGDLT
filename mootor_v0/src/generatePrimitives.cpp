@@ -99,12 +99,13 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 		vertexArray[3] = 0.5f;
 		vertexArray[4] = 0.5f;
 
-		for (int i = 1; i < triangles + 1; i++)
+		for (int i = 0; i < triangles + 1; i++)
 		{
 			float nextAngle = angle * i;
 			vertexArray[5 * i] = xpos + radius * sin(nextAngle);
 			vertexArray[5 * i + 1] = ypos + radius * cos(nextAngle);
 			vertexArray[5 * i + 2] = 1.0f;
+			//we are somehow generating the next position in the sequence????
 			vertexArray[5 * i + 3] = (vertexArray[5 * i] + 1) / 2;
 			vertexArray[5 * i + 4] = (vertexArray[5 * i + 1] + 1) / 2;
 
