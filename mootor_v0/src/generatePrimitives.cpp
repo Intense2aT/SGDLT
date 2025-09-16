@@ -50,8 +50,11 @@ int calcCircleVBufferSize(float degreesPerTriangle)
 }
 
 //target array should equal 3*output of calcTriangleCount() in order to fit x, y and z
-void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegrees, float radius, float xpos, float ypos)
+void genCircle(float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos)
 {
+	vertexArray = new float[calcCircleVBufferSize(triangleDegrees)] {0};
+	indexArray = new unsigned int[calcCircleVBufferSize(triangleDegrees) - 3] {0};
+
 	int triangles = (int)(360 / triangleDegrees);
 	float angle = 3.1415f * 2.0f / triangles; //calculating radians
 	//currently need to write 1 point per loop
@@ -62,7 +65,7 @@ void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegre
 
 	for (int i = 1; i < triangles + 1; i++)
 	{
-		float nextAngle = angle * i; 
+		float nextAngle = angle * i;
 		vertexArray[3 * i] = xpos + radius * sin(nextAngle);
 		vertexArray[3 * i + 1] = ypos + radius * cos(nextAngle);
 		vertexArray[3 * i + 2] = 1.0f;
@@ -72,23 +75,22 @@ void genCircle(float* vertexArray, unsigned int* indexArray, float triangleDegre
 		indexArray[3 * (i - 1) + 2] = (i + 1 > triangles) ? 1 : i + 1;
 	}
 
-	/*
-	for (int i = 1; i < vBufferSize + 1; i++)
+
+	for (int i = 1; i < calcCircleVBufferSize(triangleDegrees) + 1; i++)
 	{
-		std::cout << *(testArray3 + i - 1) << " ";
+		std::cout << *(vertexArray + i - 1) << " ";
 		if (i % 3 == 0)
 		{
 			std::cout << std::endl;
 		}
 	}
 
-	for (int i = 1; i < vBufferSize - 2; i++)
+	for (int i = 1; i < calcCircleVBufferSize(triangleDegrees) - 2; i++)
 	{
-		std::cout << *(testArray4 + i - 1) << " ";
+		std::cout << *(indexArray + i - 1) << " ";
 		if (i % 3 == 0)
 		{
 			std::cout << std::endl;
 		}
 	}
-	*/
 }

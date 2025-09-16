@@ -50,12 +50,12 @@ void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 {
 	if (!textured)
 	{
-		int vBufferSize = calcCircleVBufferSize(degreesPerTriangle);
-		vertexBuffer = new float[vBufferSize] {0};
-		elementBuffer = new unsigned int[vBufferSize - 3] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
+		//int vBufferSize = calcCircleVBufferSize(degreesPerTriangle);
+		//vertexBuffer = new float[vBufferSize] {0};
+		//elementBuffer = new unsigned int[vBufferSize - 3] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
 		genCircle(vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
 		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-		addData(vertexBuffer, vBufferSize * sizeof(float), elementBuffer, (vBufferSize - 3) * sizeof(unsigned int));
+		addData(vertexBuffer, calcCircleVBufferSize(degreesPerTriangle) * sizeof(float), elementBuffer, (calcCircleVBufferSize(degreesPerTriangle) - 3) * sizeof(unsigned int));
 	}
 }
 
