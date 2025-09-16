@@ -12,6 +12,8 @@ public:
 	float* vertexBuffer;
 	unsigned int* elementBuffer; //indeks buffer
 
+	unsigned int texture;
+
 	int amountDrawn;
 	const bool textured;
 
@@ -32,6 +34,8 @@ public:
 	//MakeCircle uses 5 degrees per triangle by default because it looked nice at 6.0f but i want to give some leeway
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
 	void MakeSquare(float width, float height); //implement soon its not hard
+
+	void addTexture();
 
 	void Draw() const;
 

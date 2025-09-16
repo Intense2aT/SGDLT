@@ -50,46 +50,95 @@ int calcCircleVBufferSize(float degreesPerTriangle)
 }
 
 //target array should equal 3*output of calcTriangleCount() in order to fit x, y and z
-bufferSizeStore genCircle(float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos)
+bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos)
 {
 	bufferSizeStore bufferSizes;
-	bufferSizes.vertexBufferSize = calcCircleVBufferSize(triangleDegrees);
-	bufferSizes.elementBufferSize = bufferSizes.vertexBufferSize - 3;
+	bufferSizes.elementBufferSize = calcCircleVBufferSize(triangleDegrees) - 3;
 
-	vertexArray = new float[bufferSizes.vertexBufferSize] {0};
-	indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
-
-	int triangles = (int)(360 / triangleDegrees);
-	float angle = 3.1415f * 2.0f / triangles; //calculating radians
-	//currently need to write 1 point per loop
-
-	vertexArray[0] = xpos;
-	vertexArray[1] = ypos;
-	vertexArray[2] = 1.0f;
-
-	for (int i = 1; i < triangles + 1; i++)
+	if (!generateTextured)
 	{
-		float nextAngle = angle * i;
-		vertexArray[3 * i] = xpos + radius * sin(nextAngle);
-		vertexArray[3 * i + 1] = ypos + radius * cos(nextAngle);
-		vertexArray[3 * i + 2] = 1.0f;
+		bufferSizes.vertexBufferSize = bufferSizes.elementBufferSize + 3;
 
-		indexArray[3 * (i - 1)] = 0;
-		indexArray[3 * (i - 1) + 1] = i;
-		indexArray[3 * (i - 1) + 2] = (i + 1 > triangles) ? 1 : i + 1;
-	}
+		vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+		indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
 
+		int triangles = (int)(360 / triangleDegrees);
+		float angle = 3.1415f * 2.0f / triangles; //calculating radians
+		//currently need to write 1 point per loop
 
-	for (int i = 1; i < calcCircleVBufferSize(triangleDegrees) + 1; i++)
-	{
-		std::cout << *(vertexArray + i - 1) << " ";
-		if (i % 3 == 0)
+		vertexArray[0] = xpos;
+		vertexArray[1] = ypos;
+		vertexArray[2] = 1.0f;
+
+		for (int i = 1; i < triangles + 1; i++)
 		{
-			std::cout << std::endl;
+			float nextAngle = angle * i;
+			vertexArray[3 * i] = xpos + radius * sin(nextAngle);
+			vertexArray[3 * i + 1] = ypos + radius * cos(nextAngle);
+			vertexArray[3 * i + 2] = 1.0f;
+
+			indexArray[3 * (i - 1)] = 0;
+			indexArray[3 * (i - 1) + 1] = i;
+			indexArray[3 * (i - 1) + 2] = (i + 1 > triangles) ? 1 : i + 1;
 		}
 	}
+	else
+	{
+		bufferSizes.vertexBufferSize = (bufferSizes.elementBufferSize + 3) / 3 * 5;
 
-	for (int i = 1; i < calcCircleVBufferSize(triangleDegrees) - 2; i++)
+		vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+		indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
+
+		int triangles = (int)(360 / triangleDegrees);
+		float angle = 3.1415f * 2.0f / triangles; //calculating radians
+		//currently need to write 1 point per loop
+
+		vertexArray[0] = xpos;
+		vertexArray[1] = ypos;
+		vertexArray[2] = 1.0f;
+		vertexArray[3] = 0.5f;
+		vertexArray[4] = 0.5f;
+
+		for (int i = 1; i < triangles + 1; i++)
+		{
+			float nextAngle = angle * i;
+			vertexArray[5 * i] = xpos + radius * sin(nextAngle);
+			vertexArray[5 * i + 1] = ypos + radius * cos(nextAngle);
+			vertexArray[5 * i + 2] = 1.0f;
+			vertexArray[5 * i + 3] = (vertexArray[5 * i] + 1) / 2;
+			vertexArray[5 * i + 4] = (vertexArray[5 * i + 1] + 1) / 2;
+
+			indexArray[3 * (i - 1)] = 0;
+			indexArray[3 * (i - 1) + 1] = i;
+			indexArray[3 * (i - 1) + 2] = (i + 1 > triangles) ? 1 : i + 1;
+		}
+	}
+	
+	if (!generateTextured)
+	{
+		for (int i = 1; i < bufferSizes.vertexBufferSize + 1; i++)
+		{
+			std::cout << *(vertexArray + i - 1) << " ";
+			if (i % 3 == 0)
+			{
+				std::cout << std::endl;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 1; i < bufferSizes.vertexBufferSize + 1; i++)
+		{
+			std::cout << *(vertexArray + i - 1) << " ";
+			if (i % 5 == 0)
+			{
+				std::cout << std::endl;
+			}
+		}
+	}
+	
+
+	for (int i = 1; i < bufferSizes.elementBufferSize + 1; i++)
 	{
 		std::cout << *(indexArray + i - 1) << " ";
 		if (i % 3 == 0)

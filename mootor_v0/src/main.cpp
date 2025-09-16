@@ -1,5 +1,6 @@
 #include <glew.h>
 #include <glfw3.h>
+#include "stb_image/stb_image.h"
 
 #include "initit.h"
 
@@ -32,7 +33,8 @@ int main()
 	std::cout << " user resized window" << std::endl;  });
 
 	shaderManager base;
-	base.UseBaseShaders();
+	base.UseBaseShadersTextured();
+	//base.UseBaseShadersTextured();
 	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
 	//base.CreateProgram();
 	//base.UseProgram();
@@ -41,11 +43,12 @@ int main()
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'));
-	circleObject.MakeCircle(0.5f);
+	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'), true);
+	circleObject.MakeCircle(0.6f, 30.0f);
+	circleObject.addTexture();
 
-	standardObject squareObject(0.0f, -0.5f);
-	squareObject.MakeSquare(0.5f, 1.0f);
+	//standardObject squareObject(0.0f, -0.5f);
+	//squareObject.MakeSquare(0.5f, 1.0f);
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
@@ -53,10 +56,10 @@ int main()
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		SetDrawingColor(color1);
+		//SetDrawingColor(color1);
 		circleObject.Draw();
-		SetDrawingColor(color2);
-		squareObject.Draw();
+		//SetDrawingColor(color2);
+		//squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(mootor.window);

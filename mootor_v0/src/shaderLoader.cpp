@@ -70,6 +70,14 @@ void shaderManager::UseBaseShaders()
 	UseProgram();
 }
 
+void shaderManager::UseBaseShadersTextured()
+{
+	LoadShader("src/shaders/vertexShader2_tex.shader", 'V');
+	LoadShader("src/shaders/fragmentShader2_tex.shader", 'F');
+	CreateProgram();
+	UseProgram();
+}
+
 void shaderManager::UseProgram() const
 {
 	glUseProgram(program);
