@@ -35,7 +35,7 @@ public:
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
 	void MakeSquare(float width, float height); //implement soon its not hard
 
-	void addTexture();
+	void addTexture(const char* filepath);
 
 	void Draw() const;
 

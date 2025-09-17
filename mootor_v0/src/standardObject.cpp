@@ -12,6 +12,8 @@ standardObject::standardObject(float x_position, float y_position, bool isTextur
 	glGenVertexArrays(1, &VArray);
 	glGenBuffers(1, &VBuffer);
 	glGenBuffers(1, &EBuffer);
+
+	std::cout << "object created" << std::endl;
 }
 
 standardObject::~standardObject()
@@ -30,6 +32,7 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_Size, indicies, GL_STATIC_DRAW);
 	amountDrawn = indicies_Size / sizeof(unsigned int);
+	std::cout << vertecies_Size << " " << indicies_Size << " " << amountDrawn << std::endl;
 
 	if (!textured)
 	{
@@ -49,14 +52,14 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void standardObject::addTexture()
+void standardObject::addTexture(const char* filepath)
 {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load("C:/dev_kaust/mootor_v0/mootor_v0/src/textures/test.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(filepath, &width, &height, &nrChannels, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -65,49 +68,25 @@ void standardObject::addTexture()
 
 void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 {
-	if (!textured)
-	{
-		bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
-		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-		addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
-	}
-	else
-	{
-		bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
-		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-		addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
-	}
+	bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
+	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
+	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
 void standardObject::MakeSquare(float width, float height)
 {
-	if (!textured)
-	{
-		vertexBuffer = new float[12] {0};
-		elementBuffer = new unsigned int[6] {0}; //vbuffersize -3 since we make one triangle per point generated except the middle of the circle
-		genSquare(vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
-		//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
-		addData(vertexBuffer, 12 * sizeof(float), elementBuffer, 6 * sizeof(unsigned int));
-	}
-	else 
-	{
-
-	}
+	bufferSizeStore bufferSizes = genSquare(textured, vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
+	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
 void standardObject::Draw() const
 {
-	//bindime ajutiselt shaderid siin kuni ma mingi parema asja valja motlen
-	//aga seda siis kui me sinna jouame
-	if (!textured)
+	glBindVertexArray(VArray);
+
+	if (textured)
 	{
-		glBindVertexArray(VArray);
-		glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
-	}
-	else
-	{
-		glBindVertexArray(VArray);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
 	}
-}
+
+	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
+}	

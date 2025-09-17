@@ -5,43 +5,110 @@
 
 //always returns an array with 12 floats to targetArray 4 * {x, y, z}
 //index array passed to the function should always have a 6 uint allocation
-void genSquare(float* vertexArray, unsigned int* indexArray, float width, float height, float xpos, float ypos)
+bufferSizeStore genSquare(bool generateTextured, float*& vertexArray, unsigned int*& indexArray, float width, float height, float xpos, float ypos)
 {
-	float* Square = new float[12];
-	for (int i = 1; i < 5; i++)
+	if (!generateTextured)
+		//we can just write striaght to vertexArray here, make that change later
 	{
-		Square[3 * i - 1] = 1.0f;
+		bufferSizeStore bufferSizes;
+		bufferSizes.elementBufferSize = 6;
+		bufferSizes.vertexBufferSize = 12;
+
+		vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+		indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
+
+		float* Square = new float[12];
+		for (int i = 1; i < 5; i++)
+		{
+			Square[3 * i - 1] = 1.0f;
+		}
+
+		//float corners[4][2] = { {0.0f, height},{0.0f, 0.0f},{width, 0.0f},{width, height} };
+
+		//triangles
+		Square[0] = xpos + 0.0f;
+		Square[1] = ypos + height;
+
+		Square[3] = xpos + 0.0f;
+		Square[4] = ypos + 0.0f;
+
+		Square[6] = xpos + width;
+		Square[7] = ypos + 0.0f;
+
+		Square[9] = xpos + width;
+		Square[10] = ypos + height;
+
+		for (int i = 0; i < 12; i++)
+		{
+			*(vertexArray + i) = Square[i];
+			//std::cout << vertexArray[i] << std::endl;
+		}
+
+		*indexArray = 0;
+		*(indexArray + 1) = 1;
+		*(indexArray + 2) = 2;
+		*(indexArray + 3) = 2;
+		*(indexArray + 4) = 3;
+		*(indexArray + 5) = 0;
+
+		delete[] Square;
+
+		return bufferSizes;
 	}
-
-	//float corners[4][2] = { {0.0f, height},{0.0f, 0.0f},{width, 0.0f},{width, height} };
-
-	//triangles
-	Square[0] = xpos + 0.0f;
-	Square[1] = ypos + height;
-
-	Square[3] = xpos + 0.0f;
-	Square[4] = ypos + 0.0f;
-
-	Square[6] = xpos + width;
-	Square[7] = ypos + 0.0f;
-
-	Square[9] = xpos + width;
-	Square[10] = ypos + height;
-
-	for (int i = 0; i < 12; i++)
+	else
 	{
-		*(vertexArray + i) = Square[i];
-		//std::cout << vertexArray[i] << std::endl;
+		bufferSizeStore bufferSizes;
+		bufferSizes.elementBufferSize = 6;
+		bufferSizes.vertexBufferSize = 20;
+
+		vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+		indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
+
+		for (int i = 1; i < 5; i++)
+		{
+			*(vertexArray + 5 * i - 3) = 1.0f;
+		}
+
+		*vertexArray = xpos + 0.0f;
+		*(vertexArray + 1) = ypos + height;
+		*(vertexArray + 3) = 0.0f;
+		*(vertexArray + 4) = 1.0f;
+
+		*(vertexArray + 5) = xpos + 0.0f;
+		*(vertexArray + 6) = ypos + 0.0f;
+		*(vertexArray + 8) = 0.0f;
+		*(vertexArray + 9) = 0.0f;
+
+		*(vertexArray + 10) = xpos + width;
+		*(vertexArray + 11) = ypos + 0.0f;
+		*(vertexArray + 13) = 1.0f;
+		*(vertexArray + 14) = 0.0f;
+
+
+		*(vertexArray + 15) = xpos + width;
+		*(vertexArray + 16) = ypos + height;
+		*(vertexArray + 18) = 1.0f;
+		*(vertexArray + 19) = 1.0f;
+
+		*indexArray = 0;
+		*(indexArray + 1) = 1;
+		*(indexArray + 2) = 2;
+		*(indexArray + 3) = 2;
+		*(indexArray + 4) = 3;
+		*(indexArray + 5) = 0;
+
+		for (int i = 0; i < 20; i++)
+		{
+			std::cout << vertexArray[i] << " ";
+
+			if (i % 5 == 4)
+			{
+				std::cout << std::endl;
+			}
+		}
+
+		return bufferSizes;
 	}
-
-	*indexArray = 0;
-	*(indexArray + 1) = 1;
-	*(indexArray + 2) = 2;
-	*(indexArray + 3) = 2;
-	*(indexArray + 4) = 3;
-	*(indexArray + 5) = 0;
-
-	delete[] Square;
 }
 
 int calcCircleVBufferSize(float degreesPerTriangle)

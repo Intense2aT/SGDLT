@@ -34,7 +34,7 @@ int main()
 
 	shaderManager base;
 	base.UseBaseShadersTextured();
-	//base.UseBaseShadersTextured();
+	//base.UseBaseShaders();
 	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
 	//base.CreateProgram();
 	//base.UseProgram();
@@ -45,10 +45,11 @@ int main()
 
 	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'), true);
 	circleObject.MakeCircle(0.5f);
-	circleObject.addTexture();
+	circleObject.addTexture("src/textures/test.jpg");
 
-	//standardObject squareObject(0.0f, -0.5f);
-	//squareObject.MakeSquare(0.5f, 1.0f);
+	standardObject squareObject(0.0f, 0.0f, true);
+	squareObject.MakeSquare(1.0f, 1.0f);
+	squareObject.addTexture("src/textures/test.jpg");
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
@@ -59,7 +60,7 @@ int main()
 		//SetDrawingColor(color1);
 		circleObject.Draw();
 		//SetDrawingColor(color2);
-		//squareObject.Draw();
+		squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(mootor.window);
