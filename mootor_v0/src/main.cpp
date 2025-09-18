@@ -11,61 +11,23 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
-static int width = 800, height = 450;
+static int width = 400, height = 400;
 int colorUniform;
 
-float projMat[] = { 0.75f, 0.0f, 0.0f, 0.0f,
-				 0.0f, 1.0f, 0.0f, 0.0f,
-				 0.0f, 0.0f, 1.0f, 0.0f,
-				 0.0f, 0.0f, 0.0f, 1.0f };
+float projMat[] = { 1.0f, 0.0f, 0.0f, 0.0f,
+				    0.0f, 1.0f, 0.0f, 0.0f,
+				    0.0f, 0.0f, 1.0f, 0.0f,
+				    0.0f, 0.0f, 0.0f, 1.0f };
 
 void SetDrawingColor(float* color);
-//cant be bothered to texture right now so will do conversion from pixel to opengl cordinates
-//type is 'H' for height conversion and 'W' for width conversion
-float pixelToGLCords(int position, char type); 
-
 
 void updateMatrixOnResize(int matrixLocation, int width, int height)
 {
-	projMat[0] = 1.0f;
-	projMat[5] = 1.0f;
-	projMat[10] = 1.0f;
+	projMat[0] = 2.0f / ((float)width - 0.0f);
+	projMat[5] = 2.0f / ((float)height - 0.0f);
+	projMat[10] = 2.0f / (0.0f - 100.0f);
 	projMat[15] = 1.0f;
 
-	float aspectRatio = (float)width / height;
-
-	if (width > height)
-	{
-		// Wider than tall - scale x by aspect ratio
-		projMat[0] = 1.0f / aspectRatio;
-		projMat[5] = 1.0f;
-	}
-	else
-	{
-		// Taller than wide (or square) - scale y by inverse aspect ratio
-		projMat[0] = 1.0f;
-		projMat[5] = aspectRatio;
-	}
-
-	/*
-	if (width <= height)
-	{
-		projMat[0] = (float)width / height;
-		if (projMat[5] != 1.0f)
-		{
-			projMat[5] = 1.0f;
-		}
-	}
-	else
-	{
-		projMat[5] = (float)height / width;
-		if (projMat[0] != 1.0f)
-		{
-			projMat[0] = 1.0f;
-		}
-	}
-	*/
-	
 	for (int i = 0; i < 16; i++)
 	{
 		std::cout << *(projMat + i) << " ";
@@ -75,10 +37,7 @@ void updateMatrixOnResize(int matrixLocation, int width, int height)
 		}
 	}
 	
-	//projMat[0] = (projMat[5] <= 1.0f) ? (float)width / height : 1.0f;
-	//projMat[5] = (projMat[0] <= 1.0f) ? (float)height / width : 1.0f;
-	
-	glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, projMat);
+	glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, projMat);
 }
 
 int main()
@@ -106,16 +65,17 @@ int main()
 	static int projectionMatLoc = glGetUniformLocation(base.program, "projectionMat");
 
 	glUniformMatrix4fv(projectionMatLoc, 1, GL_TRUE, projMat);
+	updateMatrixOnResize(projectionMatLoc, width, height);
 
 	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height);});
 
-	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(225, 'H'), true);
-	circleObject.MakeCircle(0.5f);
+	standardObject circleObject(200.0f, 0.0f, true);
+	circleObject.MakeCircle(200.0f);
 	circleObject.addTexture("src/textures/test.jpg");
 
 	standardObject squareObject(0.0f, 0.0f, true);
-	squareObject.MakeSquare(1.0f, 1.0f);
+	squareObject.MakeSquare(200.0f, 200.0f);
 	squareObject.addTexture("src/textures/test.jpg");
 
 	while (!glfwWindowShouldClose(mootor.window))
@@ -127,7 +87,7 @@ int main()
 		//SetDrawingColor(color1);
 		circleObject.Draw();
 		//SetDrawingColor(color2);
-		squareObject.Draw();
+		//squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(mootor.window);
@@ -144,16 +104,4 @@ int main()
 void SetDrawingColor(float *color)
 {
 	glUniform4f(colorUniform, color[0], color[1], color[2], color[3]);
-}
-
-float pixelToGLCords(int position, char type)
-{
-	if (type == 'H')
-	{
-		return position / ((float)height / 2.0f) - 1.0f;
-	}
-	else if (type == 'W')
-	{
-		return position / ((float)width / 2.0f) - 1.0f;
-	}
 }
