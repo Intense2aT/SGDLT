@@ -43,6 +43,16 @@ int main()
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
+	
+	int projectionMatLoc = glGetUniformLocation(base.program, "projectionMat");
+	//Remember this is column first matrix
+	float value[] = {0.75f, 0.0f, 0.0f, 0.0f,
+					 0.0f, 1.0f, 0.0f, 0.0f,
+					 0.0f, 0.0f, 1.0f, 0.0f,
+					 0.0f, 0.0f, 0.0f, 1.0f };
+	
+	glUniformMatrix4fv(projectionMatLoc, 1, GL_FALSE, value);
+
 	standardObject circleObject(pixelToGLCords(400, 'W'), pixelToGLCords(300, 'H'), true);
 	circleObject.MakeCircle(0.5f);
 	circleObject.addTexture("src/textures/test.jpg");
