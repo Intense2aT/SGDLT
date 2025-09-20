@@ -3,6 +3,7 @@
 #include "stb_image/stb_image.h"
 
 #include "initit.h"
+#include "input.h"
 
 #include <iostream>
 #include <string>
@@ -70,7 +71,7 @@ int main()
 	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height);});
 
-	standardObject circleObject(200.0f, 0.0f, true);
+	standardObject circleObject(0.0f, 0.0f, true);
 	circleObject.MakeCircle(200.0f);
 	circleObject.addTexture("src/textures/test.jpg");
 
@@ -80,6 +81,8 @@ int main()
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
+		std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
+
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
