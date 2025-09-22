@@ -1,9 +1,13 @@
 #include <glfw3.h>
 
-#include "initit.h"
 #include "input.h"
+#include "initit.h"
+ 
+#include <iostream>
 
-#include "iostream"
+//these values here should not be changed manually
+const char* TMouse::mouseStatus = "enabled";
+//
 
 position TMouse::GetMousePos(GLFWwindow* window)
 {
@@ -32,10 +36,10 @@ void TMouse::SetMouseStatus(GLFWwindow* window, const char* value)
 		std::cout << "SetMouseStatus() function error. Input.cpp/Input.h" << std::endl;
 	}
 
-	mousePos = value;
+	mouseStatus = value;
 }
 
 const char* TMouse::GetMouseStatus()
 {
-	return mousePos;
+	return mouseStatus;
 }

@@ -9,7 +9,7 @@ struct position
 namespace TMouse
 {
 	//these values here should not be changed manually
-	const char* mousePos = "enabled";
+	extern const char* mouseStatus;
 	//
 
 	position GetMousePos(GLFWwindow* window);
