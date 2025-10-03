@@ -19,15 +19,30 @@ void shaderManager::LoadShader(const char* location, const char& type)
 	const char* shader = Shader.c_str();
 	//std::cout << Shader << std::endl;
 
+	int success;
+	char infoLog[512];
+
 	if (type == 'V')
 	{
 		glShaderSource(vs, 1, &shader, NULL);
 		glCompileShader(vs);
+
+		glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(vs, 512, NULL, infoLog);
+			std::cout << "ERROR::SHADER::VERTEX_SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+		}
 	}
 	else if (type == 'F')
 	{
 		glShaderSource(fs, 1, &shader, NULL);
 		glCompileShader(fs);
+
+		glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(fs, 512, NULL, infoLog);
+			std::cout << "ERROR::SHADER::FRAGMENT_SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+		}
 	}
 }
 

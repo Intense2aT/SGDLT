@@ -20,7 +20,7 @@ float projMat[] = { 1.0f, 0.0f, 0.0f, 0.0f,
 				    0.0f, 0.0f, 1.0f, 0.0f,
 				    0.0f, 0.0f, 0.0f, 1.0f };
 
-void SetDrawingColor(float* color);
+void SetDrawingColor(float* color, shaderManager* base);
 
 void updateMatrixOnResize(int matrixLocation, int width, int height)
 {
@@ -57,12 +57,10 @@ int main()
 	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
 	//base.CreateProgram();
 	//base.UseProgram();
-
-	int colorUniform = glGetUniformLocation(base.program, "colors\0");
+	 
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	
 	static int projectionMatLoc = glGetUniformLocation(base.program, "projectionMat");
 
 	glUniformMatrix4fv(projectionMatLoc, 1, GL_TRUE, projMat);
@@ -75,19 +73,19 @@ int main()
 	circleObject.MakeCircle(200.0f);
 	circleObject.addTexture("src/textures/test.jpg");
 
-	standardObject squareObject(0.0f, 0.0f, true);
-	squareObject.MakeSquare(200.0f, 200.0f);
-	squareObject.addTexture("src/textures/test.jpg");
+	//standardObject squareObject(0.0f, 0.0f, true);
+	//squareObject.MakeSquare(200.0f, 200.0f);
+	//squareObject.addTexture("src/textures/test.jpg");
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
-		std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
+		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//SetDrawingColor(color1);
+		//SetDrawingColor(color1, &base);
 		circleObject.Draw();
 		//SetDrawingColor(color2);
 		//squareObject.Draw();
@@ -104,7 +102,11 @@ int main()
 	return 0;
 }
 
-void SetDrawingColor(float *color)
+void SetDrawingColor(float *color, shaderManager* base)
 {
+	int colorUniform = glGetUniformLocation(base->program, "colors");
+	if (colorUniform == -1) {
+		std::cout << "ERROR: Uniform 'colors' not found!" << std::endl;
+	}
 	glUniform4f(colorUniform, color[0], color[1], color[2], color[3]);
 }

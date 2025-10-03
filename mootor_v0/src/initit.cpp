@@ -34,6 +34,11 @@ void mootor::MakeWindow(int width, int height, const char* windowTitle)
 	}
 }
 
+double mootor::getTime()
+{
+	return glfwGetTime();
+}
+
 void mootor::Destroy()
 {
 	this->~mootor();
