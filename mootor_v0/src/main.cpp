@@ -12,6 +12,15 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
+//please kill me now
+//you should kill me now
+//and my life is worth nothing
+//and I serve zero purpose
+//please kill me now
+//you should kill me now
+//and my life is worth nothing
+//you should kill me now
+
 static int width = 400, height = 400;
 int colorUniform;
 
@@ -45,10 +54,6 @@ int main()
 {
 	mootor mootor;
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 	mootor.MakeWindow(width, height, "Window Title");
 
 	shaderManager base;
@@ -76,6 +81,8 @@ int main()
 	//standardObject squareObject(0.0f, 0.0f, true);
 	//squareObject.MakeSquare(200.0f, 200.0f);
 	//squareObject.addTexture("src/textures/test.jpg");
+
+	//TMouse::SetMouseStatus(mootor.window, "disabled");
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{

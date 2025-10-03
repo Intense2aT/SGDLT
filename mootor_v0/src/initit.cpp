@@ -10,6 +10,11 @@ mootor::mootor()
 	{
 		std::cout << "were cooked" << std::endl;
 	}
+
+	//setting up hints here (make doable without modifying motoor.cpp manually later)
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
 mootor::~mootor()
