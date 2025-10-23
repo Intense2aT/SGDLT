@@ -11,7 +11,7 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
-static int width = 400, height = 400;
+static int width = 1280, height = 720;
 int colorUniform;
 
 float projMat[] = { 1.0f, 0.0f, 0.0f, 0.0f,
@@ -70,7 +70,7 @@ int main()
 	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height);});
 
-	standardObject circleObject(200.0f, 0.0f, true);
+	standardObject circleObject(0.0f, 0.0f, true);
 	circleObject.MakeCircle(200.0f);
 	circleObject.addTexture("src/textures/test.jpg");
 
@@ -87,7 +87,7 @@ int main()
 		//SetDrawingColor(color1);
 		circleObject.Draw();
 		//SetDrawingColor(color2);
-		//squareObject.Draw();
+		squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(mootor.window);
