@@ -2,8 +2,13 @@
 
 layout(location = 0) in vec3 pCords;
 
-out vec3 colors;
+uniform vec4 colors;
+
+out vec4 color;
+
+uniform mat4 projectionMat;
 
 void main() {
-	gl_Position = vec4(pCords, 1.0);
+	gl_Position = projectionMat * vec4(pCords, 1.0);
+	color = colors;
 }

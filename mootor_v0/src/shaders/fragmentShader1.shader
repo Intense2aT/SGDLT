@@ -1,7 +1,7 @@
 #version 330
-out vec4 color;
-uniform vec4 colors;
+out vec4 fragcolor;
+in vec4 color;
 
 void main() {
-	color = colors;
+	fragcolor = vec4(color.x, color.y, color.z, color.w);
 }
