@@ -73,7 +73,7 @@ int main()
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
-		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
+		std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);

@@ -21,5 +21,5 @@ namespace TMouse
 
 namespace TBoard
 {
-
+	int getKeyState(GLFWwindow* window, int key);
 }

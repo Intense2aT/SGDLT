@@ -43,3 +43,8 @@ const char* TMouse::GetMouseStatus()
 {
 	return mouseStatus;
 }
+
+int TBoard::getKeyState(GLFWwindow* window, int key)
+{
+	return glfwGetKey(window, key);
+}
