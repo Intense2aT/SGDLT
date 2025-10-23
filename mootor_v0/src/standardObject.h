@@ -3,7 +3,7 @@
 class standardObject
 {
 private:
-	float originPosition[2];
+	float originPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
 
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
 public:
