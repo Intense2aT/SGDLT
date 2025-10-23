@@ -15,14 +15,9 @@
 static int width = 400, height = 400;
 int colorUniform;
 
-float projMat[] = { 1.0f, 0.0f, 0.0f, 0.0f,
-				    0.0f, 1.0f, 0.0f, 0.0f,
-				    0.0f, 0.0f, 1.0f, 0.0f,
-				    0.0f, 0.0f, 0.0f, 1.0f };
-
 void SetDrawingColor(float* color, shaderManager* base);
 
-void updateMatrixOnResize(int matrixLocation, int width, int height)
+void updateMatrixOnResize(int matrixLocation, int width, int height, float *projMat)
 {
 	projMat[0] = 2.0f / ((float)width - 0.0f);
 	projMat[5] = 2.0f / ((float)height - 0.0f);
@@ -59,11 +54,12 @@ int main()
 
 	static int projectionMatLoc = glGetUniformLocation(base.program, "projectionMat");
 
-	glUniformMatrix4fv(projectionMatLoc, 1, GL_TRUE, projMat);
-	updateMatrixOnResize(projectionMatLoc, width, height);
+	glUniformMatrix4fv(projectionMatLoc, 1, GL_TRUE, mootor.projMat);
+	updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);
 
-	glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
-	std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height);});
+	//FIX LATER (move to mootor class)
+	//glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
+	//std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);});
 
 	standardObject circleObject(0.0f, 0.0f, true);
 	circleObject.MakeCircle(200.0f);
