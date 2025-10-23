@@ -86,7 +86,7 @@ int main()
 		//SetDrawingColor(color1, &base);
 		circleObject.Draw();
 		//SetDrawingColor(color2);
-		squareObject.Draw();
+		//squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(mootor.window);
