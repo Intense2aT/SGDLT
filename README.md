@@ -1,2 +1,4 @@
-This is a new project, currently very barebones and lacking a lot of things.
-See on uus projekt, praegu veel väga palju asju puudu.
+Push on save, pray it works, for when it won't, he who you can ask is the one unseen.
+
+Stuff to implement:
+- learn to draw?
