@@ -12,6 +12,8 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
+#include <Windows.h>
+
 static int width = 400, height = 400;
 int colorUniform;
 
@@ -71,10 +73,16 @@ int main()
 	//squareObject.addTexture("src/textures/test.jpg");
 
 	//TMouse::SetMouseStatus(mootor.window, "hidden");
+	
+	//Creating delta time
+	const double deltaTimeConstant = 1 / 60;
+	double deltaTimeValue = glfwGetTime();
+	//
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
-		std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
+		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
+		mootor.printFpsInt();
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
@@ -90,6 +98,15 @@ int main()
 
 		/* Poll for and process events */
 		glfwPollEvents();
+
+		//PATCHI HILJEM, ENAM VÄHEM TÖÖTAB AGA SEE POLE ERITI HEA, !!!FPS SPIKES!!!
+		if (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
+		{
+			//very bad windows specific solution, more of a hack
+			Sleep(deltaTimeConstant - (mootor.getTime() - deltaTimeValue));
+		}
+		deltaTimeValue = mootor.getTime();
+		//
 	}
 
 	base.Destroy();

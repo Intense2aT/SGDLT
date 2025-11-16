@@ -15,6 +15,8 @@ mootor::mootor()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//disabling vsync to uncap framerate!!! NEED DELTA TIME IMPLEMENTATION
+	glfwSwapInterval(0);
 }
 
 mootor::~mootor()
@@ -56,7 +58,28 @@ double mootor::getTime()
 	return glfwGetTime();
 }
 
+void mootor::printFps()
+{
+	timeValuesForFps[0] = timeValuesForFps[1];
+	timeValuesForFps[1] = this->getTime();
+
+	std::cout << 1 / (timeValuesForFps[1] - timeValuesForFps[0]) << std::endl;
+}
+
+void mootor::printFpsInt()
+{
+	timeValuesForFps[0] = timeValuesForFps[1];
+	timeValuesForFps[1] = this->getTime();
+
+	std::cout << int(1 / (timeValuesForFps[1] - timeValuesForFps[0])) << std::endl;
+}
+
 void mootor::Destroy()
 {
 	this->~mootor();
+}
+
+float* mootor::GetGlobalPosition()
+{
+	return m_globalPosition;
 }
