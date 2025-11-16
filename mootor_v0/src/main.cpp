@@ -39,8 +39,9 @@ void updateMatrixOnResize(int matrixLocation, int width, int height, float *proj
 int main()
 {
 	mootor mootor;
-
+	
 	mootor.MakeWindow(width, height, "Window Title");
+	mootor.SetWindowResizable(false);
 
 	shaderManager base;
 	base.UseBaseShadersTextured();
@@ -69,7 +70,7 @@ int main()
 	//squareObject.MakeSquare(200.0f, 200.0f);
 	//squareObject.addTexture("src/textures/test.jpg");
 
-	//TMouse::SetMouseStatus(mootor.window, "disabled");
+	//TMouse::SetMouseStatus(mootor.window, "hidden");
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{

@@ -39,6 +39,18 @@ void mootor::MakeWindow(int width, int height, const char* windowTitle)
 	}
 }
 
+void mootor::SetWindowResizable(bool value)
+{
+	if (value == true)
+	{
+		glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_TRUE);
+	}
+	else
+	{
+		glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_FALSE);
+	}
+}
+
 double mootor::getTime()
 {
 	return glfwGetTime();

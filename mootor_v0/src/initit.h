@@ -15,6 +15,9 @@ public:
 	~mootor();
 
 	void MakeWindow(int width, int height, const char* windowTitle);
+
+	void SetWindowResizable(bool value);
+
 	double getTime();
 
 	void Destroy();
