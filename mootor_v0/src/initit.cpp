@@ -3,6 +3,7 @@
 
 #include "initit.h"
 #include <iostream>
+#include <chrono>
 
 mootor::mootor()
 {
@@ -72,6 +73,28 @@ void mootor::printFpsInt()
 	timeValuesForFps[1] = this->getTime();
 
 	std::cout << int(1 / (timeValuesForFps[1] - timeValuesForFps[0])) << std::endl;
+}
+
+void mootor::printFpsSmoothed()
+{
+	timeValuesForFps[0] = timeValuesForFps[1];
+	timeValuesForFps[1] = this->getTime();
+
+	FpsHolderCount++;
+	if (FpsHolderCount == 100)
+	{
+		FpsHolderCount = 0;
+	}
+
+	FpsHolder[FpsHolderCount] = 1 / (timeValuesForFps[1] - timeValuesForFps[0]);
+
+	double total = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		total += FpsHolder[i];
+	}
+
+	std::cout << total / 100 << " " << int(1 / (timeValuesForFps[1] - timeValuesForFps[0])) << " " << FpsHolderCount << std::endl;
 }
 
 void mootor::Destroy()

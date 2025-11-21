@@ -7,12 +7,14 @@
 
 #include <iostream>
 #include <string>
+#include <chrono>
 
 #include "standardObject.h"
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
-#include <Windows.h>
+//what were you thinking using this???
+//#include <Windows.h> 
 
 static int width = 400, height = 400;
 int colorUniform;
@@ -75,14 +77,14 @@ int main()
 	//TMouse::SetMouseStatus(mootor.window, "hidden");
 	
 	//Creating delta time
-	const double deltaTimeConstant = 1 / 60;
+	const double deltaTimeConstant = 1.0 / 60.0;
 	double deltaTimeValue = glfwGetTime();
 	//
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
 		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
-		mootor.printFpsInt();
+		mootor.printFpsSmoothed();
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
@@ -100,11 +102,25 @@ int main()
 		glfwPollEvents();
 
 		//PATCHI HILJEM, ENAM VÄHEM TÖÖTAB AGA SEE POLE ERITI HEA, !!!FPS SPIKES!!!
+		//depricated, will remove later but will remain for this push for reference of what not to do (AKA DONT USE WINAPI YOU *** ******)
+		/*
 		if (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
 		{
 			//very bad windows specific solution, more of a hack
-			Sleep(deltaTimeConstant - (mootor.getTime() - deltaTimeValue));
+			Sleep(unsigned int((deltaTimeConstant - (mootor.getTime() - deltaTimeValue)) * 1000));
 		}
+		*/
+
+		bool printed = false;
+		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
+		{
+			if (!printed)
+			{
+				std::cout << "frame done, on break til next" << "\n";
+				printed = true;
+			}
+		}
+
 		deltaTimeValue = mootor.getTime();
 		//
 	}
