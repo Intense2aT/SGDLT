@@ -16,7 +16,7 @@
 //what were you thinking using this???
 //#include <Windows.h> 
 
-static int width = 400, height = 400;
+static int width = 1280, height = 720;
 int colorUniform;
 
 void SetDrawingColor(float* color, shaderManager* base);
@@ -53,6 +53,9 @@ int main()
 	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
 	//base.CreateProgram();
 	//base.UseProgram();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	 
 	float color1[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	float color2[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -66,9 +69,12 @@ int main()
 	//glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	//std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);});
 
-	standardObject circleObject(0.0f, 0.0f, true);
-	circleObject.MakeCircle(200.0f);
-	circleObject.addTexture("src/textures/test.jpg");
+	float radius = 48.0f;
+	standardObject circleObject((float)(-width/2+radius), (float)(-height/2+radius), true);
+	circleObject.MakeCircle(radius);
+	circleObject.addTexture("src/textures/heartPixel1.png");
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
 
 	//standardObject squareObject(0.0f, 0.0f, true);
 	//squareObject.MakeSquare(200.0f, 200.0f);
@@ -101,16 +107,6 @@ int main()
 		/* Poll for and process events */
 		glfwPollEvents();
 
-		//PATCHI HILJEM, ENAM VÄHEM TÖÖTAB AGA SEE POLE ERITI HEA, !!!FPS SPIKES!!!
-		//depricated, will remove later but will remain for this push for reference of what not to do (AKA DONT USE WINAPI YOU *** ******)
-		/*
-		if (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
-		{
-			//very bad windows specific solution, more of a hack
-			Sleep(unsigned int((deltaTimeConstant - (mootor.getTime() - deltaTimeValue)) * 1000));
-		}
-		*/
-
 		bool printed = false;
 		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
 		{
@@ -122,7 +118,6 @@ int main()
 		}
 
 		deltaTimeValue = mootor.getTime();
-		//
 	}
 
 	base.Destroy();

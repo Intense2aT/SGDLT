@@ -41,3 +41,19 @@ public:
 
 	//void BindObject(); likely decommisioned, we bind on draw
 };
+
+class buttonObject 
+{
+private:
+
+public:
+	buttonObject()
+	{
+		
+	}
+
+	~buttonObject()
+	{
+
+	}
+};
