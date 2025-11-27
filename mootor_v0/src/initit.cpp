@@ -2,6 +2,7 @@
 #include <glfw3.h>
 
 #include "initit.h"
+#include "input.h"
 #include <iostream>
 #include <chrono>
 
@@ -105,4 +106,18 @@ void mootor::Destroy()
 float* mootor::GetGlobalPosition()
 {
 	return m_globalPosition;
+}
+
+//bad code bad code patch later
+void mootor::RefreshMousePosition()
+{
+	m_mousePosition[0] = GetMousePosition()[0];
+	m_mousePosition[1] = GetMousePosition()[2];
+}
+
+//also patch later
+double* mootor::GetMousePosition()
+{
+	double positionPtr[2] = {TMouse::GetMousePos(window).xPos, TMouse::GetMousePos(window).yPos};
+	return positionPtr;
 }

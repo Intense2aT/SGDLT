@@ -70,7 +70,7 @@ int main()
 	//std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);});
 
 	float radius = 48.0f;
-	standardObject circleObject((float)(-width/2+radius), (float)(-height/2+radius), true);
+	buttonObject circleObject((float)(-width/2+radius), (float)(-height/2+radius), true);
 	circleObject.MakeCircle(radius);
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

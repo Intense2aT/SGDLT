@@ -1,4 +1,5 @@
 #pragma once
+#include "initit.h"
 
 class standardObject
 {
@@ -7,6 +8,8 @@ private:
 
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
 public:
+	mootor* motor;
+
 	unsigned int VBuffer, EBuffer, VArray;
 
 	float* vertexBuffer;
@@ -17,7 +20,7 @@ public:
 	int amountDrawn;
 	const bool textured;
 
-	standardObject(float x_position, float y_position, bool isTextured = false);
+	standardObject(float x_position, float y_position, bool isTextured = false, mootor* mootor);
 	~standardObject();
 
 	//float* getOriginPosition();
@@ -42,18 +45,11 @@ public:
 	//void BindObject(); likely decommisioned, we bind on draw
 };
 
-class buttonObject 
+class buttonObject : public standardObject
 {
 private:
-
+	double mouseCords[2] = { 0, 0 };
+	void refreshMousePosition();
 public:
-	buttonObject()
-	{
-		
-	}
-
-	~buttonObject()
-	{
-
-	}
+	using standardObject::standardObject;
 };

@@ -6,6 +6,7 @@ private:
 	double timeValuesForFps[2] = { 0.0f, 0.0f };
 
 	float m_globalPosition[2] = {0.0f, 0.0f}; //use for player position
+	double m_mousePosition[2] = { 0, 0 };
 
 	int FpsHolderCount = 0;
 	double FpsHolder[100];
@@ -33,4 +34,7 @@ public:
 	//to get/modify player position
 	float* GetGlobalPosition();
 	void SetGlobalPosition(float x, float y) { m_globalPosition[0] = x; m_globalPosition[1] = y; };
+
+	void RefreshMousePosition();
+	double* GetMousePosition();
 };

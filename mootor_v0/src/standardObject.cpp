@@ -5,9 +5,10 @@
 
 #include "standardObject.h"
 #include "generatePrimitives.h"
+#include "initit.h"
 
-standardObject::standardObject(float x_position, float y_position, bool isTextured)
-	:originPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0)
+standardObject::standardObject(float x_position, float y_position, bool isTextured, mootor* mootor)
+	:originPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0), motor(mootor)
 {
 	glGenVertexArrays(1, &VArray);
 	glGenBuffers(1, &VBuffer);
@@ -98,3 +99,8 @@ void standardObject::Draw() const
 
 	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
 }	
+
+void buttonObject::refreshMousePosition()
+{
+
+}
