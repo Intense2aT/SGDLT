@@ -69,8 +69,9 @@ int main()
 	//glfwSetFramebufferSizeCallback(mootor.window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height);
 	//std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);});
 
+	// SHOULDNT BE USING A CIRCLE FOR A TEXTURED OBJECT
 	float radius = 48.0f;
-	buttonObject circleObject((float)(-width/2+radius), (float)(-height/2+radius), true);
+	standardObject circleObject(100.0f, 100.0f, &mootor ,true);
 	circleObject.MakeCircle(radius);
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -83,7 +84,7 @@ int main()
 	//TMouse::SetMouseStatus(mootor.window, "hidden");
 	
 	//Creating delta time
-	const double deltaTimeConstant = 1.0 / 60.0;
+	const double deltaTimeConstant = 1.0 / 120.0;
 	double deltaTimeValue = glfwGetTime();
 	//
 
@@ -108,7 +109,8 @@ int main()
 		glfwPollEvents();
 
 		bool printed = false;
-		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
+		//deltaTimeConstant - 0.00001f to get it over the set fps by a slim margin (looks prettier, likely dumb waste of resources and should be precomputed)
+		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant - 0.00001f)
 		{
 			if (!printed)
 			{

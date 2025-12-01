@@ -7,7 +7,7 @@
 #include "generatePrimitives.h"
 #include "initit.h"
 
-standardObject::standardObject(float x_position, float y_position, bool isTextured, mootor* mootor)
+standardObject::standardObject(float x_position, float y_position, mootor* mootor, bool isTextured)
 	:originPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0), motor(mootor)
 {
 	glGenVertexArrays(1, &VArray);

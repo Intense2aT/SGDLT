@@ -20,7 +20,7 @@ public:
 	int amountDrawn;
 	const bool textured;
 
-	standardObject(float x_position, float y_position, bool isTextured = false, mootor* mootor);
+	standardObject(float x_position, float y_position, mootor* mootor, bool isTextured = false);
 	~standardObject();
 
 	//float* getOriginPosition();
@@ -52,4 +52,9 @@ private:
 	void refreshMousePosition();
 public:
 	using standardObject::standardObject;
+};
+
+class playerObject : public standardObject
+{
+
 };
