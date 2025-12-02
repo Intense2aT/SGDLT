@@ -75,6 +75,9 @@ int main()
 	circleObject.MakeCircle(radius);
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	tilemap map(24, 10, 10);
+	map.addTexture("src/textures/heartPixel1.png");
 	
 
 	//standardObject squareObject(0.0f, 0.0f, true);
@@ -98,6 +101,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//SetDrawingColor(color1, &base);
+		map.Draw();
 		circleObject.Draw();
 		//SetDrawingColor(color2);
 		//squareObject.Draw();

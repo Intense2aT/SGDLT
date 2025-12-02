@@ -58,3 +58,27 @@ class playerObject : public standardObject
 {
 
 };
+
+class tilemap
+{
+private:
+	unsigned int VBuffer, EBuffer, VArray;
+	int amountDrawn = 0;
+	unsigned int texture;
+
+	float* tilemap_buffer;
+	int vbSize;
+	unsigned int* index_buffer;
+	int ibSize;
+public:
+	//default constructor will autamatically center the tilemap to [0, 0]
+	//tileside is the size of the side of a tile in the tilemap
+	//tilemap sizes are ints to represent how many tiles are in the tilemap
+	tilemap(int tileside_pixels, int tilemap_width, int tilemap_height);
+
+	void addTexture(const char* filepath);
+	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
+	void Draw();
+
+	~tilemap();
+};

@@ -104,3 +104,71 @@ void buttonObject::refreshMousePosition()
 {
 
 }
+
+tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height)
+{
+	glGenVertexArrays(1, &VArray);
+	glGenBuffers(1, &VBuffer);
+	glGenBuffers(1, &EBuffer);
+
+	bufferSizeStore bufferSizes = genTileMap(tilemap_buffer, index_buffer, tilemap_width, tilemap_height, tileside_pixels);
+	addData(tilemap_buffer, vbSize, index_buffer, ibSize);
+}
+
+void tilemap::addTexture(const char* filepath)
+{
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* data = stbi_load(filepath, &width, &height, &nrChannels, 0);
+	if (nrChannels == 4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
+	else if (nrChannels == 3)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
+}
+
+void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
+{
+	glBindVertexArray(VArray);
+	glBindBuffer(GL_ARRAY_BUFFER, VBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertecies_Size, vertecies, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_Size, indicies, GL_STATIC_DRAW);
+	amountDrawn = indicies_Size / sizeof(unsigned int);
+	std::cout << vertecies_Size << " " << indicies_Size << " " << amountDrawn << std::endl;
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void tilemap::Draw()
+{
+	glBindVertexArray(VArray);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
+}
+
+tilemap::~tilemap()
+{
+	delete[] tilemap_buffer;
+	delete[] index_buffer;
+}
