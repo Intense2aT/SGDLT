@@ -281,16 +281,16 @@ bufferSizeStore genTileMap(float* tilemap_buffer, unsigned int* index_buffer, in
 
 
 	//temporary printing
-	std::cout << variablesize << "\n";
+	std::cout << FML.vertexBufferSize << FML.elementBufferSize << "\n";
 
 	for (int i = 0; i < tilemap_width; i++)
 	{
 		for (int i = 0; i < tilemap_height * 4; i++)
 		{
-			std::cout << tilemap_buffer[i * 5];
-			std::cout << tilemap_buffer[i * 5 + 1];
-			std::cout << tilemap_buffer[i * 5 + 2];
-			std::cout << tilemap_buffer[i * 5 + 3];
+			std::cout << tilemap_buffer[i * 5] << " ";
+			std::cout << tilemap_buffer[i * 5 + 1] << " ";
+			std::cout << tilemap_buffer[i * 5 + 2] << " ";
+			std::cout << tilemap_buffer[i * 5 + 3] << " ";
 			std::cout << tilemap_buffer[i * 5 + 4] << "\n";
 		}
 	}
