@@ -112,7 +112,22 @@ tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height)
 	glGenBuffers(1, &EBuffer);
 
 	bufferSizeStore bufferSizes = genTileMap(tilemap_buffer, index_buffer, tilemap_width, tilemap_height, tileside_pixels);
+	vbSize = bufferSizes.vertexBufferSize * sizeof(float);
+	ibSize = bufferSizes.elementBufferSize * sizeof(unsigned int);
 	addData(tilemap_buffer, vbSize, index_buffer, ibSize);
+
+	int magicint = 0;
+	for (int i = 0; i < tilemap_height; i++)
+	{
+		for (int j = 0; j < tilemap_width * 4; j++)
+		{
+			magicint++;
+		}
+	}
+
+
+	std::cout << magicint << " " << ibSize / sizeof(unsigned int) / 6 << '\n';
+	system("pause");
 }
 
 void tilemap::addTexture(const char* filepath)
@@ -145,17 +160,22 @@ void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indici
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_Size, indicies, GL_STATIC_DRAW);
+
 	amountDrawn = indicies_Size / sizeof(unsigned int);
 	std::cout << vertecies_Size << " " << indicies_Size << " " << amountDrawn << std::endl;
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribDivisor(0, 1);
+
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	glVertexAttribDivisor(1, 1);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	
 }
 
 void tilemap::Draw()
@@ -164,7 +184,14 @@ void tilemap::Draw()
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
+	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
+
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
+
+	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
 }
 
 tilemap::~tilemap()

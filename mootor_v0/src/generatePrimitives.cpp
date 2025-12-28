@@ -221,7 +221,7 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 	return bufferSizes;
 }
 
-bufferSizeStore genTileMap(float* tilemap_buffer, unsigned int* index_buffer, int tilemap_width, int tilemap_height, int tileside_pixels)
+bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, int tilemap_width, int tilemap_height, int tileside_pixels)
 {
 	bufferSizeStore FML;
 
@@ -233,67 +233,74 @@ bufferSizeStore genTileMap(float* tilemap_buffer, unsigned int* index_buffer, in
 	FML.elementBufferSize = variablesize;
 	index_buffer = new unsigned int[variablesize];
 
-	int nomer1 = 0, nomer2 = 0;
+	float nomer1 = 0.0f;
+	float nomer2 = 0.0f;
 
 	for (int i = 0; i < tilemap_height; i++)
 	{
-		for (int i = 0; i < tilemap_width; i++)
+		for (int j = 0; j < tilemap_width; j++)
 		{
 			//upper left corner of tile
-			tilemap_buffer[i * 20] = nomer1;
-			tilemap_buffer[i * 20 + 1] = -nomer2;
-			tilemap_buffer[i * 20 + 2] = 0.0f;
-			tilemap_buffer[i * 20 + 3] = 0.0f;
-			tilemap_buffer[i * 20 + 4] = 1.0f;
+			tilemap_buffer[i * tilemap_width + j * 20] = nomer1;
+			tilemap_buffer[i * tilemap_width + j * 20 + 1] = -nomer2;
+			tilemap_buffer[i * tilemap_width + j * 20 + 2] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 3] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 4] = 1.0f;
 
 			//upper right corner of tile
-			tilemap_buffer[i * 20 + 5] = (float)tileside_pixels + nomer1;
-			tilemap_buffer[i * 20 + 6] = -nomer2;
-			tilemap_buffer[i * 20 + 7] = 0.0f;
-			tilemap_buffer[i * 20 + 8] = 1.0f;
-			tilemap_buffer[i * 20 + 9] = 1.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 5] = (float)tileside_pixels + nomer1;
+			tilemap_buffer[i * tilemap_width + j * 20 + 6] = -nomer2;
+			tilemap_buffer[i * tilemap_width + j * 20 + 7] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 8] = 1.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 9] = 1.0f;
 
 			//lower left corner of tile
-			tilemap_buffer[i * 20 + 10] = nomer1;
-			tilemap_buffer[i * 20 + 11] = -(float)tileside_pixels - nomer2;
-			tilemap_buffer[i * 20 + 12] = 0.0f;
-			tilemap_buffer[i * 20 + 13] = 0.0f;
-			tilemap_buffer[i * 20 + 14] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 10] = nomer1;
+			tilemap_buffer[i * tilemap_width + j * 20 + 11] = -(float)tileside_pixels - nomer2;
+			tilemap_buffer[i * tilemap_width + j * 20 + 12] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 13] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 14] = 0.0f;
 
 			//lower right corner of tile
-			tilemap_buffer[i * 20 + 15] = (float)tileside_pixels + nomer1;
-			tilemap_buffer[i * 20 + 16] = -(float)tileside_pixels - nomer2;
-			tilemap_buffer[i * 20 + 17] = 0.0f;
-			tilemap_buffer[i * 20 + 18] = 1.0f;
-			tilemap_buffer[i * 20 + 19] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 15] = (float)tileside_pixels + nomer1;
+			tilemap_buffer[i * tilemap_width + j * 20 + 16] = -(float)tileside_pixels - nomer2;
+			tilemap_buffer[i * tilemap_width + j * 20 + 17] = 0.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 18] = 1.0f;
+			tilemap_buffer[i * tilemap_width + j * 20 + 19] = 0.0f;
 
-			index_buffer[i * 6] = i * 4;
-			index_buffer[i * 6 + 1] = i * 4 + 1;
-			index_buffer[i * 6 + 2] = i * 4 + 2;
-			index_buffer[i * 6 + 3] = i * 4 + 1;
-			index_buffer[i * 6 + 4] = i * 4 + 2;
-			index_buffer[i * 6 + 5] = i * 4 + 3;
+			index_buffer[i * j * 6] = i * 4;
+			index_buffer[i * j * 6 + 1] = i * 4 + 1;
+			index_buffer[i * j * 6 + 2] = i * 4 + 2;
+			index_buffer[i * j * 6 + 3] = i * 4 + 1;
+			index_buffer[i * j * 6 + 4] = i * 4 + 2;
+			index_buffer[i * j * 6 + 5] = i * 4 + 3;
 
-			nomer1 += tileside_pixels;
+			nomer1 += (float)tileside_pixels;
 		}
-		nomer2 += tileside_pixels;
+		nomer2 += (float)tileside_pixels;
+		nomer1 = 0.0f;
 	}
 
 
 	//temporary printing
-	std::cout << FML.vertexBufferSize << FML.elementBufferSize << "\n";
+	std::cout << FML.vertexBufferSize << " " << FML.elementBufferSize << "\n";
 
-	for (int i = 0; i < tilemap_width; i++)
+	int magicint = 0;
+	for (int i = 0; i < tilemap_height; i++)
 	{
-		for (int i = 0; i < tilemap_height * 4; i++)
+		for (int j = 0; j < tilemap_width * 4; j++)
 		{
-			std::cout << tilemap_buffer[i * 5] << " ";
-			std::cout << tilemap_buffer[i * 5 + 1] << " ";
-			std::cout << tilemap_buffer[i * 5 + 2] << " ";
-			std::cout << tilemap_buffer[i * 5 + 3] << " ";
-			std::cout << tilemap_buffer[i * 5 + 4] << "\n";
+			std::cout << tilemap_buffer[i * tilemap_width + j * 5] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 1] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 2] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 3] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 4] << "\n";
+
+			magicint++;
 		}
 	}
+
+	std::cout << magicint << '\n';
 
 	system("pause");
 

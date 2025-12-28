@@ -13,9 +13,6 @@
 #include "generatePrimitives.h"
 #include "shaderLoader.h"
 
-//what were you thinking using this???
-//#include <Windows.h> 
-
 static int width = 1280, height = 720;
 int colorUniform;
 
@@ -76,8 +73,12 @@ int main()
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	tilemap map(24, 10, 10);
+	tilemap map(100, 1, 1);
 	map.addTexture("src/textures/heartPixel1.png");
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glDisable(GL_CULL_FACE);
 	
 
 	//standardObject squareObject(0.0f, 0.0f, true);
@@ -102,7 +103,8 @@ int main()
 
 		//SetDrawingColor(color1, &base);
 		map.Draw();
-		circleObject.Draw();
+		//system("pause");
+		//circleObject.Draw();
 		//SetDrawingColor(color2);
 		//squareObject.Draw();
 
