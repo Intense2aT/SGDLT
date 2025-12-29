@@ -105,13 +105,13 @@ void buttonObject::refreshMousePosition()
 
 }
 
-tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height)
+tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, float position[2])
 {
 	glGenVertexArrays(1, &VArray);
 	glGenBuffers(1, &VBuffer);
 	glGenBuffers(1, &EBuffer);
 
-	bufferSizeStore bufferSizes = genTileMap(tilemap_buffer, index_buffer, tilemap_width, tilemap_height, tileside_pixels);
+	bufferSizeStore bufferSizes = genTileMap(tilemap_buffer, index_buffer, tilemap_width, tilemap_height, tileside_pixels, position);
 	vbSize = bufferSizes.vertexBufferSize * sizeof(float);
 	ibSize = bufferSizes.elementBufferSize * sizeof(unsigned int);
 	addData(tilemap_buffer, vbSize, index_buffer, ibSize);
@@ -164,18 +164,18 @@ void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indici
 	amountDrawn = indicies_Size / sizeof(unsigned int);
 	std::cout << vertecies_Size << " " << indicies_Size << " " << amountDrawn << std::endl;
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribDivisor(0, 1);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribDivisor(1, 1);
+
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
 }
 
 void tilemap::Draw()
@@ -184,12 +184,12 @@ void tilemap::Draw()
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	//glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
 	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
 
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
+	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
 
 	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
 }

@@ -64,17 +64,17 @@ class tilemap
 private:
 	unsigned int VBuffer, EBuffer, VArray;
 	int amountDrawn = 0;
-	unsigned int texture;
 
 	float* tilemap_buffer;
 	int vbSize;
 	unsigned int* index_buffer;
 	int ibSize;
 public:
-	//default constructor will autamatically center the tilemap to [0, 0]
+	unsigned int texture;
+	//default constructor will autamatically put top right of the tilemap to [0, 0] IF NO OTHER POSITION FOR IT IS SPECIFIED
 	//tileside is the size of the side of a tile in the tilemap
 	//tilemap sizes are ints to represent how many tiles are in the tilemap
-	tilemap(int tileside_pixels, int tilemap_width, int tilemap_height);
+	tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, float position[2]);
 
 	void addTexture(const char* filepath);
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);

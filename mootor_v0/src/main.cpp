@@ -73,8 +73,9 @@ int main()
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	tilemap map(100, 1, 1);
-	map.addTexture("src/textures/heartPixel1.png");
+	float position[2] = { 1000, 1000 };
+	tilemap map(100, 20, 20, position);
+	map.addTexture("src/textures/test.jpg");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -88,7 +89,7 @@ int main()
 	//TMouse::SetMouseStatus(mootor.window, "hidden");
 	
 	//Creating delta time
-	const double deltaTimeConstant = 1.0 / 120.0;
+	const double deltaTimeConstant = 1.0 / 120.0 - 0.00001f;
 	double deltaTimeValue = glfwGetTime();
 	//
 
@@ -96,12 +97,36 @@ int main()
 	{
 		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
 		mootor.printFpsSmoothed();
+		mootor.UpdateViewMat(base);
+
+		//input
+		//looks ever so slightly better than before
+		//could make it with callback functions later
+		if (TBoard::isKeyPressed(mootor.window, GLFW_KEY_LEFT))
+		{
+			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0] + 5, mootor.GetGlobalPosition()[1]);
+		}
+		if (TBoard::isKeyPressed(mootor.window, GLFW_KEY_RIGHT))
+		{
+			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0] - 5, mootor.GetGlobalPosition()[1]);
+		}
+		if (TBoard::isKeyPressed(mootor.window, GLFW_KEY_UP))
+		{
+			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0], mootor.GetGlobalPosition()[1] - 5);
+		}
+		if (TBoard::isKeyPressed(mootor.window, GLFW_KEY_DOWN))
+		{
+			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0], mootor.GetGlobalPosition()[1] + 5);
+		}
+		std::cout << mootor.GetGlobalPosition()[0] << " " << mootor.GetGlobalPosition()[1] << "\n";
+		//
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//SetDrawingColor(color1, &base);
+
 		map.Draw();
 		//system("pause");
 		//circleObject.Draw();
@@ -109,6 +134,7 @@ int main()
 		//squareObject.Draw();
 
 		/* Swap front and back buffers */
+		glfwSwapInterval(0); //kuradima vsync
 		glfwSwapBuffers(mootor.window);
 
 		/* Poll for and process events */
@@ -116,7 +142,8 @@ int main()
 
 		bool printed = false;
 		//deltaTimeConstant - 0.00001f to get it over the set fps by a slim margin (looks prettier, likely dumb waste of resources and should be precomputed)
-		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant - 0.00001f)
+		//unnecessary edit> now precomputed, likely still inefficient and bad
+		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
 		{
 			if (!printed)
 			{

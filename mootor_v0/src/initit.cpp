@@ -107,6 +107,15 @@ float* mootor::GetGlobalPosition()
 	return m_globalPosition;
 }
 
+void mootor::UpdateViewMat(shaderManager base)
+{
+	viewMat[3] = this->m_globalPosition[0];
+	viewMat[7] = this->m_globalPosition[1];
+
+	static int loc = glGetUniformLocation(base.program, "viewMat");
+	glUniformMatrix4fv(loc, 1, GL_TRUE, viewMat);
+}
+
 //bad code bad code patch later
 void mootor::RefreshMousePosition()
 {

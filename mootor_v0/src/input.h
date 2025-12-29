@@ -22,4 +22,5 @@ namespace TMouse
 namespace TBoard
 {
 	int getKeyState(GLFWwindow* window, int key);
+	bool isKeyPressed(GLFWwindow* window, int key);
 }

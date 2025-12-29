@@ -48,3 +48,15 @@ int TBoard::getKeyState(GLFWwindow* window, int key)
 {
 	return glfwGetKey(window, key);
 }
+
+bool TBoard::isKeyPressed(GLFWwindow* window, int key)
+{
+	if (TBoard::getKeyState(window, key) == GLFW_PRESS)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

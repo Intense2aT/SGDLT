@@ -221,11 +221,11 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 	return bufferSizes;
 }
 
-bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, int tilemap_width, int tilemap_height, int tileside_pixels)
+bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, int tilemap_width, int tilemap_height, int tileside_pixels, float position[2])
 {
 	bufferSizeStore FML;
 
-	int variablesize = tilemap_width * tilemap_height * 4 * 5;
+	int variablesize = tilemap_width * tilemap_height * 4 * 6;
 	FML.vertexBufferSize = variablesize;
 	tilemap_buffer = new float[variablesize];
 
@@ -233,52 +233,56 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 	FML.elementBufferSize = variablesize;
 	index_buffer = new unsigned int[variablesize];
 
-	float nomer1 = 0.0f;
-	float nomer2 = 0.0f;
+	float nomer1 = 0.0f - position[0];
+	float nomer2 = 0.0f - position[1];
 
 	for (int i = 0; i < tilemap_height; i++)
 	{
 		for (int j = 0; j < tilemap_width; j++)
 		{
 			//upper left corner of tile
-			tilemap_buffer[i * tilemap_width + j * 20] = nomer1;
-			tilemap_buffer[i * tilemap_width + j * 20 + 1] = -nomer2;
-			tilemap_buffer[i * tilemap_width + j * 20 + 2] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 3] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 4] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24] = nomer1;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 1] = -nomer2;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 2] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 3] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 4] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 5] = 1.0f;
 
 			//upper right corner of tile
-			tilemap_buffer[i * tilemap_width + j * 20 + 5] = (float)tileside_pixels + nomer1;
-			tilemap_buffer[i * tilemap_width + j * 20 + 6] = -nomer2;
-			tilemap_buffer[i * tilemap_width + j * 20 + 7] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 8] = 1.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 9] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 6] = (float)tileside_pixels + nomer1;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 7] = -nomer2;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 8] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 9] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 10] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 11] = 1.0f;
 
 			//lower left corner of tile
-			tilemap_buffer[i * tilemap_width + j * 20 + 10] = nomer1;
-			tilemap_buffer[i * tilemap_width + j * 20 + 11] = -(float)tileside_pixels - nomer2;
-			tilemap_buffer[i * tilemap_width + j * 20 + 12] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 13] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 14] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 12] = nomer1;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 13] = -(float)tileside_pixels - nomer2;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 14] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 15] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 16] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 17] = 1.0f;
 
 			//lower right corner of tile
-			tilemap_buffer[i * tilemap_width + j * 20 + 15] = (float)tileside_pixels + nomer1;
-			tilemap_buffer[i * tilemap_width + j * 20 + 16] = -(float)tileside_pixels - nomer2;
-			tilemap_buffer[i * tilemap_width + j * 20 + 17] = 0.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 18] = 1.0f;
-			tilemap_buffer[i * tilemap_width + j * 20 + 19] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 18] = (float)tileside_pixels + nomer1;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 19] = -(float)tileside_pixels - nomer2;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 20] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 21] = 1.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 22] = 0.0f;
+			tilemap_buffer[i * tilemap_width * 24 + j * 24 + 23] = 1.0f;
 
-			index_buffer[i * j * 6] = i * 4;
-			index_buffer[i * j * 6 + 1] = i * 4 + 1;
-			index_buffer[i * j * 6 + 2] = i * 4 + 2;
-			index_buffer[i * j * 6 + 3] = i * 4 + 1;
-			index_buffer[i * j * 6 + 4] = i * 4 + 2;
-			index_buffer[i * j * 6 + 5] = i * 4 + 3;
+			index_buffer[i * tilemap_width * 6 + j * 6] = i * tilemap_width * 4 + j * 4;
+			index_buffer[i * tilemap_width * 6 + j * 6 + 1] = i * tilemap_width * 4 + j * 4 + 1;
+			index_buffer[i * tilemap_width * 6 + j * 6 + 2] = i * tilemap_width * 4 + j * 4 + 2;
+			index_buffer[i * tilemap_width * 6 + j * 6 + 3] = i * tilemap_width * 4 + j * 4 + 1;
+			index_buffer[i * tilemap_width * 6 + j * 6 + 4] = i * tilemap_width * 4 + j * 4 + 2;
+			index_buffer[i * tilemap_width * 6 + j * 6 + 5] = i * tilemap_width * 4 + j * 4 + 3;
 
 			nomer1 += (float)tileside_pixels;
 		}
 		nomer2 += (float)tileside_pixels;
-		nomer1 = 0.0f;
+		nomer1 = 0.0f - position[0];
 	}
 
 
@@ -290,16 +294,31 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 	{
 		for (int j = 0; j < tilemap_width * 4; j++)
 		{
-			std::cout << tilemap_buffer[i * tilemap_width + j * 5] << " ";
-			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 1] << " ";
-			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 2] << " ";
-			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 3] << " ";
-			std::cout << tilemap_buffer[i * tilemap_width + j * 5 + 4] << "\n";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6 + 1] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6 + 2] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6 + 3] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6 + 4] << " ";
+			std::cout << tilemap_buffer[i * tilemap_width * 24 + j * 6 + 5] << "\n";
 
 			magicint++;
 		}
 	}
 
+	std::cout << "\n";
+
+	
+	for (int i = 0; i < variablesize; i++)
+	{
+		std::cout << index_buffer[i] << " ";
+
+		if (i % 3 == 2)
+		{
+			std::cout << "\n";
+		}
+	}
+	
+	std::cout << sizeof(index_buffer) << " " << variablesize << "\n";
 	std::cout << magicint << '\n';
 
 	system("pause");

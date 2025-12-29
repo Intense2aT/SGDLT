@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glfw3.h>
+#include "shaderLoader.h"
 
 class mootor
 {
@@ -14,6 +15,11 @@ private:
 	double FpsHolder[100];
 public:
 	float projMat[16] = { 1.0f, 0.0f, 0.0f, 0.0f,
+						0.0f, 1.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f, 0.0f,
+						0.0f, 0.0f, 0.0f, 1.0f };
+
+	float viewMat[16] = { 1.0f, 0.0f, 0.0f, 0.0f,
 						0.0f, 1.0f, 0.0f, 0.0f,
 						0.0f, 0.0f, 1.0f, 0.0f,
 						0.0f, 0.0f, 0.0f, 1.0f };
@@ -37,6 +43,7 @@ public:
 	//to get/modify player position
 	float* GetGlobalPosition();
 	void SetGlobalPosition(float x, float y) { m_globalPosition[0] = x; m_globalPosition[1] = y; };
+	void UpdateViewMat(shaderManager base);
 
 	void RefreshMousePosition();
 	double* GetMousePosition();
