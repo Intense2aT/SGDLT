@@ -73,9 +73,10 @@ int main()
 	circleObject.addTexture("src/textures/heartPixel1.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	float position[2] = { 1000, 1000 };
-	tilemap map(100, 20, 20, position);
-	map.addTexture("src/textures/test.jpg");
+	float position[2] = { 1250, 1250 };
+	tilemap map(50, 50, 50, position);
+	//map.addTexture("src/textures/test.jpg", 2, 1, 2);
+	map.addTexture("src/textures/texmap1.png", 2, 1, 2);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -127,7 +128,7 @@ int main()
 
 		//SetDrawingColor(color1, &base);
 
-		map.Draw();
+		map.Draw(base);
 		//system("pause");
 		//circleObject.Draw();
 		//SetDrawingColor(color2);

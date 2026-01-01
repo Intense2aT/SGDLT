@@ -1,5 +1,6 @@
 #pragma once
 #include "initit.h"
+#include "shaderLoader.h"
 
 class standardObject
 {
@@ -69,16 +70,19 @@ private:
 	int vbSize;
 	unsigned int* index_buffer;
 	int ibSize;
+
+	int texmapitems = 0;
 public:
+	int texmap[2] = { 0, 0 };
 	unsigned int texture;
 	//default constructor will autamatically put top right of the tilemap to [0, 0] IF NO OTHER POSITION FOR IT IS SPECIFIED
 	//tileside is the size of the side of a tile in the tilemap
 	//tilemap sizes are ints to represent how many tiles are in the tilemap
 	tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, float position[2]);
 
-	void addTexture(const char* filepath);
+	void addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map);
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
-	void Draw();
+	void Draw(shaderManager& base);
 
 	~tilemap();
 };

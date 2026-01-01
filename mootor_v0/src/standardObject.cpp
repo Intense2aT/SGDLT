@@ -130,7 +130,7 @@ tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, flo
 	system("pause");
 }
 
-void tilemap::addTexture(const char* filepath)
+void tilemap::addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map)
 {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -150,6 +150,16 @@ void tilemap::addTexture(const char* filepath)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
+
+	texmap[0] = texmap_width;
+	texmap[1] = texmap_height;
+	texmapitems = items_in_map;
+
+	for (auto i : texmap)
+	{
+		std::cout << i << std::endl;
+	}
+	system("pause");
 }
 
 void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
@@ -178,9 +188,12 @@ void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indici
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void tilemap::Draw()
+void tilemap::Draw(shaderManager& base)
 {
 	glBindVertexArray(VArray);
+
+	int uniloc = glGetUniformLocation(base.program, "texmapdims");
+	glUniform2iv(uniloc, 1, texmap);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
