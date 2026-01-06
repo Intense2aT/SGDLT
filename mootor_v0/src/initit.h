@@ -2,6 +2,23 @@
 
 #include <glfw3.h>
 #include "shaderLoader.h"
+#include "standardObject.h"
+
+struct drawable
+{
+	int type; //0 = normal, 1 = tilemap
+
+};
+
+class scene
+{
+private:
+
+
+
+public:
+
+};
 
 class mootor
 {

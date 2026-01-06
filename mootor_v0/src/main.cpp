@@ -81,7 +81,6 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	glDisable(GL_CULL_FACE);
-	
 
 	//standardObject squareObject(0.0f, 0.0f, true);
 	//squareObject.MakeSquare(200.0f, 200.0f);
