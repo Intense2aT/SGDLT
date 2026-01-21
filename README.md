@@ -1,4 +1,11 @@
-Push on save, pray it works, for when it won't, he who you can ask is the one unseen.
+Testime prod'is.
 
-Stuff to implement:
-- learn to draw?
+Olemas:
+- okei hulk asju
+
+Vaja:
+- palju palju veel aga selliste projektidega on alati nii
+
+See projekt on vabavara ja igasugune minu loodud kood siin repo's on kõigile vabalt kasutatav.
+See aga tähendab, et ma ei anna minisuguseid garantiisid ning kasutaja vastutab ise selle kasutamise eest.
+Aitäh :D
