@@ -285,7 +285,7 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 		nomer1 = 0.0f - position[0];
 	}
 
-
+	/*
 	//temporary printing
 	std::cout << FML.vertexBufferSize << " " << FML.elementBufferSize << "\n";
 
@@ -322,6 +322,7 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 	std::cout << magicint << '\n';
 
 	system("pause");
+	*/
 
 	return FML;
 }

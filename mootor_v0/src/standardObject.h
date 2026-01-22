@@ -1,6 +1,8 @@
 #pragma once
-#include "initit.h"
+//#include "initit.h"
 #include "shaderLoader.h"
+
+class mootor;
 
 class standardObject
 {

@@ -74,9 +74,9 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { 1250, 1250 };
-	tilemap map(50, 50, 50, position);
+	tilemap map(100, 200, 200, position);
 	//map.addTexture("src/textures/test.jpg", 2, 1, 2);
-	map.addTexture("src/textures/texmap1.png", 2, 1, 2);
+	map.addTexture("src/textures/simpleCandle1.jpg", 1, 1, 1);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -143,6 +143,7 @@ int main()
 		bool printed = false;
 		//deltaTimeConstant - 0.00001f to get it over the set fps by a slim margin (looks prettier, likely dumb waste of resources and should be precomputed)
 		//unnecessary edit> now precomputed, likely still inefficient and bad
+		/*
 		while (mootor.getTime() - deltaTimeValue < deltaTimeConstant)
 		{
 			if (!printed)
@@ -151,6 +152,7 @@ int main()
 				printed = true;
 			}
 		}
+		*/
 
 		deltaTimeValue = mootor.getTime();
 	}

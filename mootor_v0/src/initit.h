@@ -4,6 +4,7 @@
 #include "shaderLoader.h"
 #include "standardObject.h"
 
+/*
 struct drawable
 {
 	int type; //0 = normal, 1 = tilemap
@@ -19,6 +20,7 @@ private:
 public:
 
 };
+*/
 
 class mootor
 {
