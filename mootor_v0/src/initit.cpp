@@ -59,12 +59,15 @@ double mootor::getTime()
 	return glfwGetTime();
 }
 
-void mootor::printFps()
+double mootor::printFps()
 {
 	timeValuesForFps[0] = timeValuesForFps[1];
 	timeValuesForFps[1] = this->getTime();
 
-	std::cout << 1 / (timeValuesForFps[1] - timeValuesForFps[0]) << std::endl;
+	//tempfix
+	//std::cout << 1 / (timeValuesForFps[1] - timeValuesForFps[0]) << std::endl;
+
+	return 1 / (timeValuesForFps[1] - timeValuesForFps[0]);
 }
 
 void mootor::printFpsInt()

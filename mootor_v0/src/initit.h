@@ -53,7 +53,9 @@ public:
 	void SetWindowResizable(bool value);
 
 	double getTime();
-	void printFps();
+	//returns fps if needed (bad fix)
+	double printFps();
+
 	void printFpsInt();
 	void printFpsSmoothed();
 
