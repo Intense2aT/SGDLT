@@ -25,7 +25,7 @@ public:
 
 	//automatically loads and creates a shader program using the base shaders (add some functionality later for different base shaders)
 	void UseBaseShaders();
-	void UseBaseShadersTextured();
+	void UseBaseShadersTexmap();
 	void UseProgram() const;
 	void Destroy();
 };

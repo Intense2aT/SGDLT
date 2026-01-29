@@ -10,6 +10,9 @@ private:
 	float originPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
 
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
+
+	int texmap[2] = { 0, 0 };
+	int texmapitems = 0;
 public:
 	mootor* motor;
 
@@ -41,9 +44,9 @@ public:
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
 	void MakeSquare(float width, float height); //implement soon its not hard
 
-	void addTexture(const char* filepath);
+	void addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map);
 
-	void Draw() const;
+	void Draw(shaderManager& base) const;
 
 	//void BindObject(); likely decommisioned, we bind on draw
 };

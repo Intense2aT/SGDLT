@@ -35,25 +35,21 @@ void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int*
 	amountDrawn = indicies_Size / sizeof(unsigned int);
 	std::cout << vertecies_Size << " " << indicies_Size << " " << amountDrawn << std::endl;
 
-	if (!textured)
-	{
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-	} 
-	else
-	{
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-	}
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void standardObject::addTexture(const char* filepath)
+void standardObject::addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map)
 {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -73,6 +69,10 @@ void standardObject::addTexture(const char* filepath)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
+
+	texmap[0] = texmap_width;
+	texmap[1] = texmap_height;
+	texmapitems = items_in_map;
 }
 
 void standardObject::MakeCircle(float radius, float degreesPerTriangle)
@@ -88,14 +88,16 @@ void standardObject::MakeSquare(float width, float height)
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
-void standardObject::Draw() const
+void standardObject::Draw(shaderManager& base) const
 {
 	glBindVertexArray(VArray);
 
-	if (textured)
-	{
-		glBindTexture(GL_TEXTURE_2D, texture);
-	}
+	base.UseProgram();
+
+	int uniloc = glGetUniformLocation(base.program, "texmapdims");
+	glUniform2iv(uniloc, 1, texmap);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
 }	
@@ -159,7 +161,7 @@ void tilemap::addTexture(const char* filepath, int texmap_width, int texmap_heig
 	{
 		std::cout << i << std::endl;
 	}
-	system("pause");
+	//system("pause");
 }
 
 void tilemap::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
@@ -192,19 +194,14 @@ void tilemap::Draw(shaderManager& base)
 {
 	glBindVertexArray(VArray);
 
+	base.UseProgram();
+
 	int uniloc = glGetUniformLocation(base.program, "texmapdims");
 	glUniform2iv(uniloc, 1, texmap);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
-	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
-
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
-
-	//glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 4);
 }
 
 tilemap::~tilemap()

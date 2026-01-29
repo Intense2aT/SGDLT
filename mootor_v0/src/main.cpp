@@ -47,7 +47,7 @@ int main()
 	mootor.SetWindowResizable(false);
 
 	shaderManager base;
-	base.UseBaseShadersTextured();
+	base.UseBaseShadersTexmap();
 	//base.UseBaseShaders();
 	//base.LoadShader("C:/dev_kaust/mootor_v0/mootor_v0/src/shaders/testShaderFrag.shader", 'F');
 	//base.CreateProgram();
@@ -69,20 +69,21 @@ int main()
 	//std::cout << "window resized " << width << height << std::endl; updateMatrixOnResize(projectionMatLoc, width, height, mootor.projMat);});
 
 	// SHOULDNT BE USING A CIRCLE FOR A TEXTURED OBJECT
-	float radius = 48.0f;
-	standardObject circleObject(100.0f, 100.0f, &mootor ,true);
-	circleObject.MakeCircle(radius);
-	circleObject.addTexture("src/textures/heartPixel1.png");
+	// SEE ON PRAGUE ULDINE TESTOBJEKT, mitte lihtsalt ring
+	float radius = 100.0f;
+	standardObject circleObject(-640.0f, 360.0f, &mootor ,true);
+	circleObject.MakeSquare(radius, radius);
+	circleObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	float position[2] = { 1250, 1250 };
+	float position[2] = { -540, 260 };
 	tilemap map(100, 50, 50, position);
-	//map.addTexture("src/textures/test.jpg", 2, 1, 2);
-	map.addTexture("src/textures/simpleCandle1.jpg", 1, 1, 1);
+	map.addTexture("src/textures/texmap1.png", 2, 2, 4);
+	//map.addTexture("src/textures/simpleCandle1.jpg", 1, 1, 1);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 
 	//standardObject squareObject(0.0f, 0.0f, true);
 	//squareObject.MakeSquare(200.0f, 200.0f);
@@ -95,13 +96,16 @@ int main()
 	double deltaTimeValue = glfwGetTime();
 	//
 
+	/* fps measurment variables for testing
 	int ticks = 50000;
 	double magic = 0;
 	int x = 0;
+	*/
 	while (!glfwWindowShouldClose(mootor.window))
 	{
 		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
-		magic += mootor.printFps();
+		//magic += mootor.printFps(); redo later
+
 		mootor.UpdateViewMat(base);
 
 		//input
@@ -134,7 +138,7 @@ int main()
 
 		map.Draw(base);
 		//system("pause");
-		//circleObject.Draw();
+		circleObject.Draw(base);
 		//SetDrawingColor(color2);
 		//squareObject.Draw();
 
@@ -160,15 +164,17 @@ int main()
 		*/
 
 		deltaTimeValue = mootor.getTime();
+		/*
 		if (x >= ticks)
 		{
 			break;
 		}
 		x++;
+		*/
 	}
 
-	std::cout << "\n" << "average fps was: " << magic / ticks << "\n";
-	system("pause");
+	//std::cout << "\n" << "average fps was: " << magic / ticks << "\n";
+	//system("pause");
 
 	base.Destroy();
 	mootor.Destroy();

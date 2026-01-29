@@ -59,36 +59,40 @@ bufferSizeStore genSquare(bool generateTextured, float*& vertexArray, unsigned i
 	{
 		bufferSizeStore bufferSizes;
 		bufferSizes.elementBufferSize = 6;
-		bufferSizes.vertexBufferSize = 20;
+		bufferSizes.vertexBufferSize = 24;
 
 		vertexArray = new float[bufferSizes.vertexBufferSize] {0};
 		indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
 
 		for (int i = 1; i < 5; i++)
 		{
-			*(vertexArray + 5 * i - 3) = 1.0f;
+			*(vertexArray + 6 * i - 4) = 1.0f;
 		}
 
 		*vertexArray = xpos + 0.0f;
-		*(vertexArray + 1) = ypos + height;
+		*(vertexArray + 1) = ypos;
 		*(vertexArray + 3) = 0.0f;
 		*(vertexArray + 4) = 1.0f;
+		*(vertexArray + 5) = 1.0f;
 
-		*(vertexArray + 5) = xpos + 0.0f;
-		*(vertexArray + 6) = ypos + 0.0f;
-		*(vertexArray + 8) = 0.0f;
+		*(vertexArray + 6) = xpos + 0.0f;
+		*(vertexArray + 7) = ypos - height;
 		*(vertexArray + 9) = 0.0f;
+		*(vertexArray + 10) = 0.0f;
+		*(vertexArray + 11) = 1.0f;
 
-		*(vertexArray + 10) = xpos + width;
-		*(vertexArray + 11) = ypos + 0.0f;
-		*(vertexArray + 13) = 1.0f;
-		*(vertexArray + 14) = 0.0f;
+		*(vertexArray + 12) = xpos + width;
+		*(vertexArray + 13) = ypos - height;
+		*(vertexArray + 15) = 1.0f;
+		*(vertexArray + 16) = 0.0f;
+		*(vertexArray + 17) = 1.0f;
 
 
-		*(vertexArray + 15) = xpos + width;
-		*(vertexArray + 16) = ypos + height;
-		*(vertexArray + 18) = 1.0f;
-		*(vertexArray + 19) = 1.0f;
+		*(vertexArray + 18) = xpos + width;
+		*(vertexArray + 19) = ypos;
+		*(vertexArray + 21) = 1.0f;
+		*(vertexArray + 22) = 1.0f;
+		*(vertexArray + 23) = 1.0f;
 
 		*indexArray = 0;
 		*(indexArray + 1) = 1;
@@ -233,7 +237,7 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 	FML.elementBufferSize = variablesize;
 	index_buffer = new unsigned int[variablesize];
 
-	float nomer1 = 0.0f - position[0];
+	float nomer1 = 0.0f + position[0];
 	float nomer2 = 0.0f - position[1];
 
 	for (int i = 0; i < tilemap_height; i++)
@@ -282,7 +286,7 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 			nomer1 += (float)tileside_pixels;
 		}
 		nomer2 += (float)tileside_pixels;
-		nomer1 = 0.0f - position[0];
+		nomer1 = 0.0f + position[0];
 	}
 
 	/*

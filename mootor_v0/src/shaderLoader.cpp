@@ -77,6 +77,7 @@ shaderManager::~shaderManager()
 	glDeleteProgram(program);
 }
 
+//teeb uued shaderid tavaobjekti jaoks
 void shaderManager::UseBaseShaders()
 {
 	LoadShader("src/shaders/vertexShader1.shader", 'V');
@@ -85,7 +86,7 @@ void shaderManager::UseBaseShaders()
 	UseProgram();
 }
 
-void shaderManager::UseBaseShadersTextured()
+void shaderManager::UseBaseShadersTexmap()
 {
 	LoadShader("src/shaders/vertexShader2_tex.shader", 'V');
 	LoadShader("src/shaders/fragmentShader2_tex.shader", 'F');
