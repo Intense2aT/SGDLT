@@ -7,13 +7,16 @@ class mootor;
 class standardObject
 {
 private:
+
+public:
 	float originPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
 
-	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
+	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size, bool deletePreviousBuffers);
 
 	int texmap[2] = { 0, 0 };
 	int texmapitems = 0;
-public:
+	int vbSize = 0, ibSize = 0;
+
 	mootor* motor;
 
 	unsigned int VBuffer, EBuffer, VArray;
@@ -72,9 +75,8 @@ private:
 	int amountDrawn = 0;
 
 	float* tilemap_buffer;
-	int vbSize;
 	unsigned int* index_buffer;
-	int ibSize;
+	int vbSize, ibSize;
 
 	int texmapitems = 0;
 public:
@@ -90,4 +92,15 @@ public:
 	void Draw(shaderManager& base);
 
 	~tilemap();
+};
+
+//combinedObject shall be able to be used to combine many singular standardObjects with the same texture map
+//into a singular object for more efficient drawing
+class combinedObject : public standardObject
+{
+private:
+	bool magicMemFixApplied = false;
+public:
+	using standardObject::standardObject;
+	void addObject(standardObject* object);
 };

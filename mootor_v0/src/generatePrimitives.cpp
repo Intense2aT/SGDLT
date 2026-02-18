@@ -7,7 +7,7 @@
 //index array passed to the function should always have a 6 uint allocation
 bufferSizeStore genSquare(bool generateTextured, float*& vertexArray, unsigned int*& indexArray, float width, float height, float xpos, float ypos)
 {
-	if (!generateTextured)
+	if (!generateTextured) // DEPRECTAED
 		//we can just write striaght to vertexArray here, make that change later
 	{
 		bufferSizeStore bufferSizes;
@@ -126,7 +126,7 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 	bufferSizeStore bufferSizes;
 	bufferSizes.elementBufferSize = calcCircleVBufferSize(triangleDegrees) - 3;
 
-	if (!generateTextured)
+	if (!generateTextured) //deprecated
 	{
 		bufferSizes.vertexBufferSize = bufferSizes.elementBufferSize + 3;
 
@@ -155,7 +155,7 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 	}
 	else
 	{
-		bufferSizes.vertexBufferSize = (bufferSizes.elementBufferSize + 3) / 3 * 5;
+		bufferSizes.vertexBufferSize = (bufferSizes.elementBufferSize + 3) / 3 * 6;
 		std::cout << bufferSizes.vertexBufferSize << std::endl;
 		std::cout << bufferSizes.elementBufferSize << std::endl;
 
@@ -172,16 +172,18 @@ bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned i
 		vertexArray[2] = 1.0f;
 		vertexArray[3] = 0.5f;
 		vertexArray[4] = 0.5f;
+		vertexArray[5] = 1.0f;
 
 		for (int i = 1; i < triangles + 1; i++)
 		{
 			float nextAngle = angle * i;
-			vertexArray[5 * i] = xpos + radius * sin(nextAngle);
-			vertexArray[5 * i + 1] = ypos + radius * cos(nextAngle);
-			vertexArray[5 * i + 2] = 1.0f;
+			vertexArray[6 * i] = xpos + radius * sin(nextAngle);
+			vertexArray[6 * i + 1] = ypos + radius * cos(nextAngle);
+			vertexArray[6 * i + 2] = 1.0f;
 			//we are somehow generating the next position in the sequence????
-			vertexArray[5 * i + 3] = 0.5f + 0.5f * sin(nextAngle);
-			vertexArray[5 * i + 4] = 0.5f + 0.5f * cos(nextAngle);
+			vertexArray[6 * i + 3] = 0.5f + 0.5f * sin(nextAngle);
+			vertexArray[6 * i + 4] = 0.5f + 0.5f * cos(nextAngle);
+			vertexArray[6 * i + 5] = 1.0f;
 
 			indexArray[3 * (i - 1)] = 0;
 			indexArray[3 * (i - 1) + 1] = i;

@@ -24,8 +24,19 @@ standardObject::~standardObject()
 	std::cout << "memory freed?" << std::endl;
 }
 
-void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size)
+void standardObject::addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size, bool deletePreviousBuffers = false)
 {
+	if (deletePreviousBuffers)
+	{
+		glDeleteVertexArrays(1, &VArray);
+		glDeleteBuffers(1, &VBuffer);
+		glDeleteBuffers(1, &EBuffer);
+
+		glGenVertexArrays(1, &VArray);
+		glGenBuffers(1, &VBuffer);
+		glGenBuffers(1, &EBuffer);
+	}
+
 	glBindVertexArray(VArray);
 	glBindBuffer(GL_ARRAY_BUFFER, VBuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertecies_Size, vertecies, GL_STATIC_DRAW);
@@ -78,6 +89,8 @@ void standardObject::addTexture(const char* filepath, int texmap_width, int texm
 void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 {
 	bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
+	vbSize = bufferSizes.vertexBufferSize;
+	ibSize = bufferSizes.elementBufferSize;
 	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
@@ -85,6 +98,8 @@ void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 void standardObject::MakeSquare(float width, float height)
 {
 	bufferSizeStore bufferSizes = genSquare(textured, vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
+	vbSize = bufferSizes.vertexBufferSize;
+	ibSize = bufferSizes.elementBufferSize;
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
@@ -208,4 +223,110 @@ tilemap::~tilemap()
 {
 	delete[] tilemap_buffer;
 	delete[] index_buffer;
+}
+
+//method is slow, this should only be used during loading processes
+//DON'T USE IN APP LOOP, LIKELY TO KILL PERFORMANCE
+//
+//Compatability with standardObject makeCircle and makeSquare functions is NOT GUARANTEED
+void combinedObject::addObject(standardObject* object)
+{
+	if (vbSize == 0 && ibSize == 0)
+	{
+		vbSize += object->vbSize;
+		ibSize += object->ibSize;
+
+		vertexBuffer = new float[vbSize] {0};
+		elementBuffer = new unsigned int[ibSize] {0};
+
+		for (int i = 0; i < vbSize; i++)
+		{
+			this->vertexBuffer[i] = object->vertexBuffer[i];
+		}
+		for (int i = 0; i < ibSize; i++)
+		{
+			this->elementBuffer[i] = object->elementBuffer[i];
+		}
+
+		addData(vertexBuffer, vbSize * sizeof(float), elementBuffer, ibSize * sizeof(unsigned int), false);
+	}
+	else
+	{
+		std::cout << "combinedObject: " << vbSize << " " << ibSize << " was\n";
+		std::cout << "added object " << object->vbSize << " " << object->ibSize << " was\n";
+		vbSize += object->vbSize;
+		ibSize += object->ibSize;
+		std::cout << "combinedObject: " << vbSize << " " << ibSize << " now is\n";
+		system("pause");
+
+		float* tempVertBuffer = new float[vbSize] {0};
+		unsigned int* tempIndexBuffer = new unsigned int[ibSize] {0};
+
+		//transfer two vertexBuffers to a temporary buffer
+		for (int i = 0; i < vbSize - object->vbSize; i++)
+		{
+			tempVertBuffer[i] = this->vertexBuffer[i];
+		}
+		for (int i = 0; i < object->vbSize; i++)
+		{
+			tempVertBuffer[(vbSize - object->vbSize) + i] = object->vertexBuffer[i];
+		}
+
+		//transfer two indexBuffers to a temporary buffer
+		//here we must also modify the added indexes to prevent breaking things
+		for (int i = 0; i < ibSize - object->ibSize; i++)
+		{
+			tempIndexBuffer[i] = this->elementBuffer[i];
+		}
+		for (int i = ibSize - object->ibSize; i < ibSize; i++)
+		{
+			//THIS IS NOT A SAFE SOLUTION
+			// we are currently doing offset(combinedObj previous vbSize / 6 (mis on ühe punkti suurus floatides)) + indexValue (from the object index buffer)
+			tempIndexBuffer[i] = (vbSize - object->vbSize) / 6 + object->elementBuffer[i - (ibSize - object->ibSize)];
+		}
+
+		//null the main buffers and transfer back the contents from the temp pointers
+		delete[] this->vertexBuffer;
+		delete[] this->elementBuffer;
+		this->vertexBuffer = new float[vbSize] {0};
+		this->elementBuffer = new unsigned int[ibSize] {0};
+
+		for (int i = 0; i < vbSize; i++)
+		{
+			this->vertexBuffer[i] = tempVertBuffer[i];
+		}
+		for (int i = 0; i < ibSize; i++)
+		{
+			this->elementBuffer[i] = tempIndexBuffer[i];
+		}
+
+		//call to addData to make things work things hopefully
+		addData(vertexBuffer, vbSize * sizeof(float), elementBuffer, ibSize * sizeof(unsigned int), true);
+
+		//free memory of the temp pointers
+		delete[] tempVertBuffer;
+		delete[] tempIndexBuffer;
+
+		//debug stuff
+		for (int i = 0; i < vbSize; i++)
+		{
+			std::cout << this->vertexBuffer[i] << " ";
+			if ((i + 1) % 6 == 0)
+			{
+				std::cout << std::endl;
+			}
+		}
+		std::cout << "\n";
+		for (int i = 0; i < ibSize; i++)
+		{
+			std::cout << this->elementBuffer[i] << " ";
+			if ((i + 1) % 3 == 0)
+			{
+				std::cout << std::endl;
+			}
+		}
+	}
+
+	std::cout << vbSize << " " << ibSize << " <- vertexBufferSize and indexBufferSize!" << std::endl;
+	system("pause");
 }

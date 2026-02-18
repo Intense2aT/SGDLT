@@ -1,5 +1,3 @@
-//test
-
 #include <glew.h>
 #include <glfw3.h>
 #include "stb_image/stb_image.h"
@@ -71,9 +69,36 @@ int main()
 	// SHOULDNT BE USING A CIRCLE FOR A TEXTURED OBJECT
 	// SEE ON PRAGUE ULDINE TESTOBJEKT, mitte lihtsalt ring
 	float radius = 100.0f;
-	standardObject circleObject(-640.0f, 360.0f, &mootor ,true);
-	circleObject.MakeSquare(radius, radius);
-	circleObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	//textured flag is pointless, everything is textured by default
+
+	standardObject objectOne(-0.0f, 0.0f, &mootor ,true);
+	objectOne.MakeSquare(radius, radius);
+	objectOne.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+
+	standardObject objectTwo(-100.0f, 100.0f, &mootor, true);
+	objectTwo.MakeSquare(radius, radius);
+	objectTwo.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+
+	standardObject objectThree(100.0f, 100.0f, &mootor, true);
+	objectThree.MakeSquare(radius, radius);
+	objectThree.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+
+	standardObject objectFour(100.0f, -100.0f, &mootor, true);
+	objectFour.MakeSquare(radius, radius);
+	objectFour.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+
+	standardObject objectFive(-100.0f, -100.0f, &mootor, true);
+	objectFive.MakeSquare(radius, radius);
+	objectFive.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	
+
+	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
+	combObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	combObject.addObject(&objectOne);
+	combObject.addObject(&objectTwo);
+	combObject.addObject(&objectThree);
+	combObject.addObject(&objectFour);
+	combObject.addObject(&objectFive);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { -540, 260 };
@@ -136,9 +161,16 @@ int main()
 
 		//SetDrawingColor(color1, &base);
 
-		map.Draw(base);
+		//map.Draw(base);
 		//system("pause");
-		circleObject.Draw(base);
+		/*
+		objectOne.Draw(base);
+		objectTwo.Draw(base);
+		objectThree.Draw(base);
+		objectFour.Draw(base);
+		objectFive.Draw(base);
+		*/
+		combObject.Draw(base);
 		//SetDrawingColor(color2);
 		//squareObject.Draw();
 
