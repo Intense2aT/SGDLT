@@ -330,3 +330,11 @@ void combinedObject::addObject(standardObject* object)
 	std::cout << vbSize << " " << ibSize << " <- vertexBufferSize and indexBufferSize!" << std::endl;
 	system("pause");
 }
+
+void combinedObject::addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects)
+{
+	for (int i = 0; i < numberOfObjects; i++)
+	{
+		addObject(objectPointer[i]);
+	}
+}

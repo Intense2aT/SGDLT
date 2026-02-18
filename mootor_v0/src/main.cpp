@@ -91,14 +91,24 @@ int main()
 	objectFive.MakeSquare(radius, radius);
 	objectFive.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
 	
+	standardObject** standardList = new standardObject*[5];
+	standardList[0] = &objectOne;
+	standardList[1] = &objectTwo;
+	standardList[2] = &objectThree;
+	standardList[3] = &objectFour;
+	standardList[4] = &objectFive;
+
 
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
 	combObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	/*
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
 	combObject.addObject(&objectFive);
+	*/
+	combObject.addObjectList(standardList, 5);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { -540, 260 };
@@ -130,7 +140,7 @@ int main()
 	{
 		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
 		//magic += mootor.printFps(); redo later
-
+		mootor.printFpsSmoothed();
 		mootor.UpdateViewMat(base);
 
 		//input

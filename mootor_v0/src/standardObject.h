@@ -103,4 +103,5 @@ private:
 public:
 	using standardObject::standardObject;
 	void addObject(standardObject* object);
+	void addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects);
 };
