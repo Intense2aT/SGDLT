@@ -109,6 +109,7 @@ int main()
 	combObject.addObject(&objectFive);
 	*/
 	combObject.addObjectList(standardList, 5);
+	delete[] standardList;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { -540, 260 };
