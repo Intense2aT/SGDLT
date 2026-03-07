@@ -8,7 +8,7 @@
 #include "initit.h"
 
 standardObject::standardObject(float x_position, float y_position, mootor* mootor, bool isTextured)
-	:originPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0), motor(mootor)
+	:objectPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0), motor(mootor)
 {
 	glGenVertexArrays(1, &VArray);
 	glGenBuffers(1, &VBuffer);
@@ -86,18 +86,84 @@ void standardObject::addTexture(const char* filepath, int texmap_width, int texm
 	texmapitems = items_in_map;
 }
 
+void standardObject::softSwapTexture(const float& tilemapNum)
+{
+	int x = vbSize / 6;
+
+	for (int i = 1; i <= x; i++)
+	{
+		vertexBuffer[i * 6 - 1] = tilemapNum;
+	}
+
+	glBindVertexArray(VArray);
+	glBindBuffer(GL_ARRAY_BUFFER, VBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vbSize * sizeof(float), vertexBuffer, GL_STATIC_DRAW);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void standardObject::SetObjectRotation(const float& deg)
+{
+	objectRotation = deg;
+
+	float angle = objectRotation * 3.14159f / 180.0f;
+
+	*(modelMat) = cos(angle);
+	*(modelMat + 1) = -sin(angle);
+	*(modelMat + 4) = sin(angle);
+	*(modelMat + 5) = cos(angle);
+}
+
+void standardObject::RotateObject(const float& deg)
+{
+	objectRotation += -deg;
+
+	float angle = objectRotation * 3.14159f / 180.0f;
+
+	*(modelMat) = cos(angle);
+	*(modelMat + 1) = -sin(angle);
+	*(modelMat + 4) = sin(angle);
+	*(modelMat + 5) = cos(angle);
+}
+
+void standardObject::SetObjectPosition(float* pos)
+{
+	objectPosition[0] = pos[0];
+	objectPosition[1] = pos[1];
+
+	*(modelMat + 3) = objectPosition[0];
+	*(modelMat + 7) = objectPosition[1];
+}
+
+void standardObject::MoveObject(float* vec)
+{
+	objectPosition[0] += vec[0];
+	objectPosition[1] += vec[1];
+
+	*(modelMat + 3) = objectPosition[0];
+	*(modelMat + 7) = objectPosition[1];
+}
+
 void standardObject::MakeCircle(float radius, float degreesPerTriangle)
 {
-	bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, originPosition[0], originPosition[1]);
+	bufferSizeStore bufferSizes = genCircle(textured, vertexBuffer, elementBuffer, degreesPerTriangle, radius, objectPosition[0], objectPosition[1]);
 	vbSize = bufferSizes.vertexBufferSize;
 	ibSize = bufferSizes.elementBufferSize;
 	//dont forget to multiply the size of array(how many elements there are) with the size of the actual variable type in that array
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
+void standardObject::MakeTriangle(float width, float height)
+{
+	bufferSizeStore bufferSizes = genTriangle(textured, vertexBuffer, elementBuffer, width, height, objectPosition[0], objectPosition[1]);
+	vbSize = bufferSizes.vertexBufferSize;
+	ibSize = bufferSizes.elementBufferSize;
+	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
+}
+
 void standardObject::MakeSquare(float width, float height)
 {
-	bufferSizeStore bufferSizes = genSquare(textured, vertexBuffer, elementBuffer, width, height, originPosition[0], originPosition[1]);
+	bufferSizeStore bufferSizes = genSquare(textured, vertexBuffer, elementBuffer, width, height, objectPosition[0], objectPosition[1]);
 	vbSize = bufferSizes.vertexBufferSize;
 	ibSize = bufferSizes.elementBufferSize;
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
@@ -108,6 +174,9 @@ void standardObject::Draw(shaderManager& base) const
 	glBindVertexArray(VArray);
 
 	base.UseProgram();
+
+	int loc = glGetUniformLocation(base.program, "modelMat");
+	glUniformMatrix4fv(loc, 1, GL_TRUE, modelMat);
 
 	int uniloc = glGetUniformLocation(base.program, "texmapdims");
 	glUniform2iv(uniloc, 1, texmap);

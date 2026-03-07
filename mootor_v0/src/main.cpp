@@ -70,15 +70,18 @@ int main()
 	// SEE ON PRAGUE ULDINE TESTOBJEKT, mitte lihtsalt ring
 	float radius = 100.0f;
 	//textured flag is pointless, everything is textured by default
-
+	
 	standardObject objectOne(-0.0f, 0.0f, &mootor ,true);
-	objectOne.MakeSquare(radius, radius);
+	objectOne.MakeCircle(radius);
 	objectOne.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
-
-	standardObject objectTwo(-100.0f, 100.0f, &mootor, true);
+	
+	standardObject objectTwo(0.0f, 0.0f, &mootor, true);
 	objectTwo.MakeSquare(radius, radius);
-	objectTwo.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	objectTwo.addTexture("src/textures/texmap1.png", 2, 1, 2);
 
+	float vec[2] = { 100, 100 };
+	objectTwo.MoveObject(vec);
+	/*
 	standardObject objectThree(100.0f, 100.0f, &mootor, true);
 	objectThree.MakeSquare(radius, radius);
 	objectThree.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
@@ -101,15 +104,16 @@ int main()
 
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
 	combObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
-	/*
+	
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
 	combObject.addObject(&objectFive);
-	*/
+	
 	combObject.addObjectList(standardList, 5);
 	delete[] standardList;
+	*/
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { -540, 260 };
@@ -174,14 +178,18 @@ int main()
 
 		//map.Draw(base);
 		//system("pause");
+		//objectOne.RotateObject(0.01f);
+		//objectOne.Draw(base);
+		objectTwo.softSwapTexture((int(mootor.getTime()) % 2) + 1);
+		objectTwo.RotateObject(0.01f);
+		objectTwo.Draw(base);
 		/*
-		objectOne.Draw(base);
 		objectTwo.Draw(base);
 		objectThree.Draw(base);
 		objectFour.Draw(base);
 		objectFive.Draw(base);
 		*/
-		combObject.Draw(base);
+		//combObject.Draw(base);
 		//SetDrawingColor(color2);
 		//squareObject.Draw();
 

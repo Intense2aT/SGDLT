@@ -69,27 +69,27 @@ bufferSizeStore genSquare(bool generateTextured, float*& vertexArray, unsigned i
 			*(vertexArray + 6 * i - 4) = 1.0f;
 		}
 
-		*vertexArray = xpos + 0.0f;
-		*(vertexArray + 1) = ypos;
+		*vertexArray = xpos - 0.5 * width;
+		*(vertexArray + 1) = ypos + 0.5 * height;
 		*(vertexArray + 3) = 0.0f;
 		*(vertexArray + 4) = 1.0f;
 		*(vertexArray + 5) = 1.0f;
 
-		*(vertexArray + 6) = xpos + 0.0f;
-		*(vertexArray + 7) = ypos - height;
+		*(vertexArray + 6) = xpos - 0.5 * width;
+		*(vertexArray + 7) = ypos - 0.5 * height;
 		*(vertexArray + 9) = 0.0f;
 		*(vertexArray + 10) = 0.0f;
 		*(vertexArray + 11) = 1.0f;
 
-		*(vertexArray + 12) = xpos + width;
-		*(vertexArray + 13) = ypos - height;
+		*(vertexArray + 12) = xpos + 0.5 * width;
+		*(vertexArray + 13) = ypos - 0.5 * height;
 		*(vertexArray + 15) = 1.0f;
 		*(vertexArray + 16) = 0.0f;
 		*(vertexArray + 17) = 1.0f;
 
 
-		*(vertexArray + 18) = xpos + width;
-		*(vertexArray + 19) = ypos;
+		*(vertexArray + 18) = xpos + 0.5 * width;
+		*(vertexArray + 19) = ypos + 0.5 * height;
 		*(vertexArray + 21) = 1.0f;
 		*(vertexArray + 22) = 1.0f;
 		*(vertexArray + 23) = 1.0f;
@@ -113,6 +113,45 @@ bufferSizeStore genSquare(bool generateTextured, float*& vertexArray, unsigned i
 
 		return bufferSizes;
 	}
+}
+
+bufferSizeStore genTriangle(bool generateTextured, float*& vertexArray, unsigned int*& indexArray, float width, float height, float xpos, float ypos)
+{
+	bufferSizeStore bufferSizes;
+	bufferSizes.elementBufferSize = 3;
+	bufferSizes.vertexBufferSize = 18;
+
+	vertexArray = new float[bufferSizes.vertexBufferSize] {0};
+	indexArray = new unsigned int[bufferSizes.elementBufferSize] {0};
+
+	*indexArray = 0;
+	*(indexArray + 1) = 1;
+	*(indexArray + 2) = 2;
+
+	for (int i = 1; i < 4; i++)
+	{
+		*(vertexArray + 6 * i - 4) = 1.0f;
+	}
+
+	*vertexArray = xpos + 0.0f;
+	*(vertexArray + 1) = ypos;
+	*(vertexArray + 3) = 0.0f;
+	*(vertexArray + 4) = 1.0f;
+	*(vertexArray + 5) = 1.0f;
+
+	*(vertexArray + 6) = xpos + 0.0f;
+	*(vertexArray + 7) = ypos - height;
+	*(vertexArray + 9) = 0.0f;
+	*(vertexArray + 10) = 0.0f;
+	*(vertexArray + 11) = 1.0f;
+
+	*(vertexArray + 12) = xpos + width;
+	*(vertexArray + 13) = ypos;
+	*(vertexArray + 15) = 1.0f;
+	*(vertexArray + 16) = 1.0f;
+	*(vertexArray + 17) = 1.0f;
+
+	return bufferSizes;
 }
 
 int calcCircleVBufferSize(float degreesPerTriangle)

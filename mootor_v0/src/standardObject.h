@@ -9,7 +9,14 @@ class standardObject
 private:
 
 public:
-	float originPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
+	float objectPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
+	float objectRotation = 0.0f;
+	float modelMat[16] = {
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	};
 
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size, bool deletePreviousBuffers);
 
@@ -45,9 +52,19 @@ public:
 
 	//MakeCircle uses 5 degrees per triangle by default because it looked nice at 6.0f but i want to give some leeway
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
+	void MakeTriangle(float width, float height);
 	void MakeSquare(float width, float height); //implement soon its not hard
 
 	void addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map);
+	//swapping the cord on the texture map, texture map remains the same
+	void softSwapTexture(const float& tilemapNum);
+
+	//rotation always happens on the Z axis since 3d means effort
+	void SetObjectRotation(const float& deg);
+	void RotateObject(const float& deg);
+
+	void SetObjectPosition(float* pos);
+	void MoveObject(float* vec);
 
 	void Draw(shaderManager& base) const;
 
