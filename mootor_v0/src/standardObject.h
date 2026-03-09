@@ -54,9 +54,11 @@ public:
 	void MakeCircle(float radius, float degreesPerTriangle = 5.0f);
 	void MakeTriangle(float width, float height);
 	void MakeSquare(float width, float height); //implement soon its not hard
+	void MakeCustom(float* vertex_buffer, int vbSize, unsigned int* index_buffer, int ibSize);
 
 	void addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map);
 	//swapping the cord on the texture map, texture map remains the same
+	//could be done better inside shader but that means rewriting it
 	void softSwapTexture(const float& tilemapNum);
 
 	//rotation always happens on the Z axis since 3d means effort

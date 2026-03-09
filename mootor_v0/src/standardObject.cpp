@@ -169,6 +169,13 @@ void standardObject::MakeSquare(float width, float height)
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 }
 
+void standardObject::MakeCustom(float* vertex_buffer, int vbSize, unsigned int* index_buffer, int ibSize)
+{
+	this->vbSize = vbSize;
+	this->ibSize = ibSize;
+	addData(vertex_buffer, vbSize, index_buffer, ibSize);
+}
+
 void standardObject::Draw(shaderManager& base) const
 {
 	glBindVertexArray(VArray);
