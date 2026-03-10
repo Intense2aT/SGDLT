@@ -13,6 +13,7 @@ namespace TMouse
 	//
 
 	position GetMousePos(GLFWwindow* window);
+	bool isButtonPressed(GLFWwindow* window, int key);
 
 	//enabled, disabled or hidden
 	void SetMouseStatus(GLFWwindow* window, const char* value);

@@ -17,6 +17,15 @@ position TMouse::GetMousePos(GLFWwindow* window)
 	return mousePos;
 }
 
+bool TMouse::isButtonPressed(GLFWwindow* window, int button)
+{
+	if (glfwGetMouseButton(window, button) == GLFW_PRESS)
+	{
+		return true;
+	}
+	return false;
+}
+
 void TMouse::SetMouseStatus(GLFWwindow* window, const char* value)
 {
 	if (value == "enabled")

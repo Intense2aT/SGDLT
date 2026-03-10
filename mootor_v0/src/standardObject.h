@@ -10,6 +10,7 @@ private:
 
 public:
 	float objectPosition[2]; //global position (need a matrix for this to display relative to current coordinates)
+	float objectDimensions[2];
 	float objectRotation = 0.0f;
 	float modelMat[16] = {
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -76,10 +77,15 @@ public:
 class buttonObject : public standardObject
 {
 private:
-	double mouseCords[2] = { 0, 0 };
-	void refreshMousePosition();
+	void (*OnClick)(buttonObject*) = 0;
 public:
 	using standardObject::standardObject;
+
+	void setOnClick(void (*func)(buttonObject*));
+
+	//detecting mouse collision while clicking
+	//assumption is that the button is a rectangle
+	bool checkClick(bool centerMouseCords = true);
 };
 
 class playerObject : public standardObject

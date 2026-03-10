@@ -6,6 +6,7 @@
 #include "standardObject.h"
 #include "generatePrimitives.h"
 #include "initit.h"
+#include "input.h"
 
 standardObject::standardObject(float x_position, float y_position, mootor* mootor, bool isTextured)
 	:objectPosition{ x_position, y_position }, textured(isTextured), amountDrawn(0), motor(mootor)
@@ -163,6 +164,9 @@ void standardObject::MakeTriangle(float width, float height)
 
 void standardObject::MakeSquare(float width, float height)
 {
+	objectDimensions[0] = width;
+	objectDimensions[1] = height;
+
 	bufferSizeStore bufferSizes = genSquare(textured, vertexBuffer, elementBuffer, width, height, objectPosition[0], objectPosition[1]);
 	vbSize = bufferSizes.vertexBufferSize;
 	ibSize = bufferSizes.elementBufferSize;
@@ -192,11 +196,6 @@ void standardObject::Draw(shaderManager& base) const
 
 	glDrawElements(GL_TRIANGLES, amountDrawn, GL_UNSIGNED_INT, 0);
 }	
-
-void buttonObject::refreshMousePosition()
-{
-
-}
 
 tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, float position[2])
 {
@@ -413,4 +412,41 @@ void combinedObject::addObjectList(standardObject** objectPointer, const unsigne
 	{
 		addObject(objectPointer[i]);
 	}
+}
+
+void buttonObject::setOnClick(void(*func)(buttonObject*))
+{
+	OnClick = func;
+}
+
+bool buttonObject::checkClick(bool centerMouseCords)
+{
+	position mouse = TMouse::GetMousePos(this->motor->window);
+	float x[2] = { this->objectPosition[0] - this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0], this->objectPosition[0] + this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0]};
+	float y[2] = { this->objectPosition[1] - this->objectDimensions[1] / 2- this->motor->GetGlobalPosition()[1], this->objectPosition[1] + this->objectDimensions[1] / 2 - this->motor->GetGlobalPosition()[1]};
+
+	if (centerMouseCords)
+	{
+		mouse.xPos = mouse.xPos - this->motor->GetWindowDimensions()[0] / 2;
+		mouse.yPos = mouse.yPos - this->motor->GetWindowDimensions()[1] / 2;
+
+		const bool flipMouseY = true;
+		if (flipMouseY)
+		{
+			mouse.yPos = mouse.yPos * -1;
+		}
+	}
+
+	std::cout << x[0] << " " << mouse.xPos << " " << x[1] << std::endl;
+	std::cout << y[0] << " " << mouse.yPos << " " << y[1] << std::endl;
+
+	if (x[0] < float(mouse.xPos) && float(mouse.xPos) < x[1] &&
+		y[0] < float(mouse.yPos) && float(mouse.yPos) < y[1])
+	{
+		if (TMouse::isButtonPressed(this->motor->window, GLFW_MOUSE_BUTTON_LEFT))
+		{
+			return true;
+		}
+	}
+	return false;
 }

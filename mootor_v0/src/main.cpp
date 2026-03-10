@@ -37,6 +37,11 @@ void updateMatrixOnResize(int matrixLocation, int width, int height, float *proj
 	glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, projMat);
 }
 
+void testFuncButton(buttonObject* object)
+{
+	std::cout << "test" << std::endl;
+}
+
 int main()
 {
 	mootor mootor;
@@ -81,11 +86,14 @@ int main()
 
 	float vec[2] = { 100, 100 };
 	objectTwo.MoveObject(vec);
-	/*
-	standardObject objectThree(100.0f, 100.0f, &mootor, true);
-	objectThree.MakeSquare(radius, radius);
-	objectThree.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
 
+	buttonObject objectThree(0.0f, 0.0f, &mootor, true);
+	objectThree.MakeSquare(radius, radius);
+	objectThree.addTexture("src/textures/texmap1.png", 2, 1, 2);
+	objectThree.MoveObject(vec);
+	//should work
+	objectThree.setOnClick(testFuncButton);
+	/*
 	standardObject objectFour(100.0f, -100.0f, &mootor, true);
 	objectFour.MakeSquare(radius, radius);
 	objectFour.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
@@ -143,7 +151,6 @@ int main()
 	*/
 	while (!glfwWindowShouldClose(mootor.window))
 	{
-		//std::cout << TMouse::GetMousePos(mootor.window).xPos << " " << TMouse::GetMousePos(mootor.window).yPos << std::endl;
 		//magic += mootor.printFps(); redo later
 		mootor.printFpsSmoothed();
 		mootor.UpdateViewMat(base);
@@ -167,8 +174,8 @@ int main()
 		{
 			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0], mootor.GetGlobalPosition()[1] + 5);
 		}
-		std::cout << mootor.GetGlobalPosition()[0] << " " << mootor.GetGlobalPosition()[1] << "\n";
-		//
+
+		objectThree.checkClick();
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
@@ -180,18 +187,15 @@ int main()
 		//system("pause");
 		//objectOne.RotateObject(0.01f);
 		//objectOne.Draw(base);
-		objectTwo.softSwapTexture((int(mootor.getTime()) % 2) + 1);
-		objectTwo.RotateObject(0.01f);
-		objectTwo.Draw(base);
-		/*
-		objectTwo.Draw(base);
+		//objectTwo.softSwapTexture((int(mootor.getTime()) % 2) + 1);
+		//objectTwo.RotateObject(0.01f);
+		//objectTwo.Draw(base);
 		objectThree.Draw(base);
+		/*
 		objectFour.Draw(base);
 		objectFive.Draw(base);
 		*/
 		//combObject.Draw(base);
-		//SetDrawingColor(color2);
-		//squareObject.Draw();
 
 		/* Swap front and back buffers */
 		glfwSwapInterval(0); //kuradima vsync
@@ -215,17 +219,9 @@ int main()
 		*/
 
 		deltaTimeValue = mootor.getTime();
-		/*
-		if (x >= ticks)
-		{
-			break;
-		}
-		x++;
-		*/
 	}
 
 	//std::cout << "\n" << "average fps was: " << magic / ticks << "\n";
-	//system("pause");
 
 	base.Destroy();
 	mootor.Destroy();

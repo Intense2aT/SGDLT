@@ -30,6 +30,8 @@ private:
 	float m_globalPosition[2] = {0.0f, 0.0f}; //use for player position
 	double m_mousePosition[2] = { 0, 0 };
 
+	int windowDimensions[2];
+
 	int FpsHolderCount = 0;
 	double FpsHolder[100];
 public:
@@ -68,4 +70,6 @@ public:
 
 	void RefreshMousePosition();
 	double* GetMousePosition();
+
+	int* GetWindowDimensions();
 };

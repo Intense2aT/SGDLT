@@ -40,6 +40,9 @@ void mootor::MakeWindow(int width, int height, const char* windowTitle)
 	{
 		std::cout << "glew not working" << std::endl;
 	}
+
+	windowDimensions[0] = width;
+	windowDimensions[1] = height;
 }
 
 void mootor::SetWindowResizable(bool value)
@@ -131,4 +134,9 @@ double* mootor::GetMousePosition()
 {
 	double positionPtr[2] = {TMouse::GetMousePos(window).xPos, TMouse::GetMousePos(window).yPos};
 	return positionPtr;
+}
+
+int* mootor::GetWindowDimensions()
+{
+	return this->windowDimensions;
 }
