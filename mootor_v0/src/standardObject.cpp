@@ -437,14 +437,15 @@ bool buttonObject::checkClick(bool centerMouseCords)
 		}
 	}
 
-	std::cout << x[0] << " " << mouse.xPos << " " << x[1] << std::endl;
-	std::cout << y[0] << " " << mouse.yPos << " " << y[1] << std::endl;
+	//std::cout << x[0] << " " << mouse.xPos << " " << x[1] << std::endl;
+	//std::cout << y[0] << " " << mouse.yPos << " " << y[1] << std::endl;
 
 	if (x[0] < float(mouse.xPos) && float(mouse.xPos) < x[1] &&
 		y[0] < float(mouse.yPos) && float(mouse.yPos) < y[1])
 	{
 		if (TMouse::isButtonPressed(this->motor->window, GLFW_MOUSE_BUTTON_LEFT))
 		{
+			std::cout << "PRESSSSSSSSSSS\n";
 			return true;
 		}
 	}

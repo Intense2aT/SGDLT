@@ -89,8 +89,8 @@ int main()
 
 	buttonObject objectThree(0.0f, 0.0f, &mootor, true);
 	objectThree.MakeSquare(radius, radius);
-	objectThree.addTexture("src/textures/texmap1.png", 2, 1, 2);
-	objectThree.MoveObject(vec);
+	objectThree.addTexture("src/textures/tähestik_v1.png", 10, 4, 40);
+	//objectThree.MoveObject(vec);
 	//should work
 	objectThree.setOnClick(testFuncButton);
 	/*
@@ -152,7 +152,7 @@ int main()
 	while (!glfwWindowShouldClose(mootor.window))
 	{
 		//magic += mootor.printFps(); redo later
-		mootor.printFpsSmoothed();
+		//mootor.printFpsSmoothed();
 		mootor.UpdateViewMat(base);
 
 		//input
@@ -190,7 +190,10 @@ int main()
 		//objectTwo.softSwapTexture((int(mootor.getTime()) % 2) + 1);
 		//objectTwo.RotateObject(0.01f);
 		//objectTwo.Draw(base);
+		objectThree.softSwapTexture(float(int(mootor.getTime()) % 40 + 1));
+		std::cout << int(mootor.getTime()) % 40 + 1 << std::endl;
 		objectThree.Draw(base);
+		
 		/*
 		objectFour.Draw(base);
 		objectFive.Draw(base);

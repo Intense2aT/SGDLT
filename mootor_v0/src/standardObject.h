@@ -74,6 +74,8 @@ public:
 	//void BindObject(); likely decommisioned, we bind on draw
 };
 
+
+//NOT FINISHED
 class buttonObject : public standardObject
 {
 private:
@@ -123,10 +125,18 @@ public:
 //into a singular object for more efficient drawing
 class combinedObject : public standardObject
 {
-private:
-	bool magicMemFixApplied = false;
 public:
 	using standardObject::standardObject;
 	void addObject(standardObject* object);
 	void addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects);
+};
+
+//class for text display in a reasonable manner
+class textObject : combinedObject
+{
+private:
+
+public:
+	using combinedObject::standardObject;
+
 };
