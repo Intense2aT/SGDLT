@@ -82,7 +82,7 @@ int main()
 	
 	standardObject objectTwo(0.0f, 0.0f, &mootor, true);
 	objectTwo.MakeSquare(radius, radius);
-	objectTwo.addTexture("src/textures/texmap1.png", 2, 1, 2);
+	objectTwo.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
 
 	float vec[2] = { 100, 100 };
 	objectTwo.MoveObject(vec);
@@ -90,6 +90,7 @@ int main()
 	buttonObject objectThree(0.0f, 0.0f, &mootor, true);
 	objectThree.MakeSquare(radius, radius);
 	objectThree.addTexture("src/textures/tähestik_v1.png", 10, 4, 40);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//objectThree.MoveObject(vec);
 	//should work
 	objectThree.setOnClick(testFuncButton);
@@ -108,13 +109,15 @@ int main()
 	standardList[2] = &objectThree;
 	standardList[3] = &objectFour;
 	standardList[4] = &objectFive;
+	*/
 
 
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
-	combObject.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	combObject.addTexture("src/textures/texmap1.png", 2, 1, 2);
 	
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
+	/*
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
 	combObject.addObject(&objectFive);
@@ -190,15 +193,16 @@ int main()
 		//objectTwo.softSwapTexture((int(mootor.getTime()) % 2) + 1);
 		//objectTwo.RotateObject(0.01f);
 		//objectTwo.Draw(base);
-		objectThree.softSwapTexture(float(int(mootor.getTime()) % 40 + 1));
-		std::cout << int(mootor.getTime()) % 40 + 1 << std::endl;
-		objectThree.Draw(base);
+		//objectThree.softSwapTexture(float(int(mootor.getTime()) % 40 + 1));
+		//std::cout << int(mootor.getTime()) % 40 + 1 << std::endl;
+		//objectThree.Draw(base);
 		
 		/*
 		objectFour.Draw(base);
 		objectFive.Draw(base);
 		*/
-		//combObject.Draw(base);
+		combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 2);
+		combObject.Draw(base);
 
 		/* Swap front and back buffers */
 		glfwSwapInterval(0); //kuradima vsync

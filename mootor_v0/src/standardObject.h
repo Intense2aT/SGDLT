@@ -115,6 +115,8 @@ public:
 	tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, float position[2]);
 
 	void addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map);
+	void softSwapTexture(const float& tilemapNum);
+
 	void addData(float* vertecies, int vertecies_Size, unsigned int* indicies, int indicies_Size);
 	void Draw(shaderManager& base);
 
@@ -126,9 +128,20 @@ public:
 class combinedObject : public standardObject
 {
 public:
+	int objectAmount = 0;
+	int* objectEnds;
+
 	using standardObject::standardObject;
+	~combinedObject();
 	void addObject(standardObject* object);
 	void addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects);
+
+	//object number is the number of the ending in the objectEnds object endpoints list
+	//in simple terms, it is the number of objects after it was added
+	//example: object added third is 3
+	//if nothing else is specified, default is 1
+	//0 will return an unhandled error and undefined behavior, don't do / fix that
+	void softSwapTextureInstance(const float& tilemapNum, const unsigned int& objectNumber = 1);
 };
 
 //class for text display in a reasonable manner
@@ -137,6 +150,6 @@ class textObject : combinedObject
 private:
 
 public:
-	using combinedObject::standardObject;
+	//using combinedObject::standardObject;
 
 };

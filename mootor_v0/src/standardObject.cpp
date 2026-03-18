@@ -300,6 +300,13 @@ tilemap::~tilemap()
 	delete[] index_buffer;
 }
 
+combinedObject::~combinedObject()
+{
+	delete[] objectEnds;
+	//mälu leke = ohutu :D
+	//standardObject::~standardObject();
+}
+
 //method is slow, this should only be used during loading processes
 //DON'T USE IN APP LOOP, LIKELY TO KILL PERFORMANCE
 //
@@ -322,6 +329,10 @@ void combinedObject::addObject(standardObject* object)
 		{
 			this->elementBuffer[i] = object->elementBuffer[i];
 		}
+
+		this->objectAmount += 1;
+		this->objectEnds = new int[objectAmount];
+		this->objectEnds[objectAmount - 1] = this->vbSize;
 
 		addData(vertexBuffer, vbSize * sizeof(float), elementBuffer, ibSize * sizeof(unsigned int), false);
 	}
@@ -382,6 +393,26 @@ void combinedObject::addObject(standardObject* object)
 		delete[] tempVertBuffer;
 		delete[] tempIndexBuffer;
 
+		//store the new object's ending in out data
+		this->objectAmount += 1;
+		int* tempbuffer = new int[objectAmount]{ 0 };
+		
+		for (int i = 0; i < objectAmount - 1; i++)
+		{
+			tempbuffer[i] = objectEnds[i];
+		}
+
+		delete[] this->objectEnds;
+		this->objectEnds = new int[objectAmount];
+
+		for (int i = 0; i < objectAmount - 1; i++)
+		{
+			objectEnds[i] = tempbuffer[i];
+		}
+
+		this->objectEnds[objectAmount - 1] = this->vbSize;
+		delete[] tempbuffer;
+
 		//debug stuff
 		for (int i = 0; i < vbSize; i++)
 		{
@@ -411,6 +442,37 @@ void combinedObject::addObjectList(standardObject** objectPointer, const unsigne
 	for (int i = 0; i < numberOfObjects; i++)
 	{
 		addObject(objectPointer[i]);
+	}
+}
+
+void combinedObject::softSwapTextureInstance(const float& tilemapNum, const unsigned int& objectNumber)
+{
+	if (objectNumber > objectAmount)
+	{
+		std::cout << "SGDLT ERROR: UINT objectNumber for function softSwapTextureInstance on combinedObject is bigger than the amount of objects in the object. "
+			<< "No changes to object will be made." << std::endl;
+	}
+	else
+	{
+		int bounds[2] = { 0 };
+		
+		if (objectNumber != 1)
+		{
+			bounds[0] = this->objectEnds[objectNumber - 2] / 6;
+		}
+
+		bounds[1] = this->objectEnds[objectNumber - 1] / 6;
+	
+		for (int i = bounds[0]; i <= bounds[1]; i++)
+		{
+			vertexBuffer[i * 6 - 1] = tilemapNum;
+		}
+
+		glBindVertexArray(VArray);
+		glBindBuffer(GL_ARRAY_BUFFER, VBuffer);
+		glBufferData(GL_ARRAY_BUFFER, vbSize * sizeof(float), vertexBuffer, GL_STATIC_DRAW);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }
 
