@@ -1,26 +1,10 @@
 #pragma once
 
 #include <glfw3.h>
+#include "miniaudio/miniaudio.h"
+
 #include "shaderLoader.h"
 #include "standardObject.h"
-
-/*
-struct drawable
-{
-	int type; //0 = normal, 1 = tilemap
-
-};
-
-class scene
-{
-private:
-
-
-
-public:
-
-};
-*/
 
 class mootor
 {
@@ -72,4 +56,15 @@ public:
 	double* GetMousePosition();
 
 	int* GetWindowDimensions();
+};
+
+class musicPlayer
+{
+private:
+	ma_engine engine;
+public:
+	musicPlayer();
+	~musicPlayer();
+
+	void playSound(const char* filepath);
 };

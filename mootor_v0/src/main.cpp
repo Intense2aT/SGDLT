@@ -117,6 +117,8 @@ int main()
 	
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
+	float vect[2] = { -720.0f, 0.0f };
+	combObject.MoveObject(vect);
 	/*
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
@@ -152,6 +154,9 @@ int main()
 	double magic = 0;
 	int x = 0;
 	*/
+	musicPlayer music;
+	music.playSound("C:/Users/laur/source/repos/Intense2aT/SGDLT/mootor_v0/src/sounds/testMusicNotMine.wav");
+
 	while (!glfwWindowShouldClose(mootor.window))
 	{
 		//magic += mootor.printFps(); redo later
@@ -202,6 +207,9 @@ int main()
 		objectFive.Draw(base);
 		*/
 		combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 2);
+		combObject.RotateObject(0.04f);
+		float vecto[2] = { 0.1f, 0.0f };
+		combObject.MoveObject(vecto);
 		combObject.Draw(base);
 
 		/* Swap front and back buffers */

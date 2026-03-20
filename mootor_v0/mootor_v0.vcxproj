@@ -139,6 +139,7 @@
     <ClCompile Include="src\initit.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\miniaudio\miniaudio.cpp" />
     <ClCompile Include="src\shaderLoader.cpp" />
     <ClCompile Include="src\standardObject.cpp" />
     <ClCompile Include="src\stb_image\stb_image.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="src\generatePrimitives.h" />
     <ClInclude Include="src\initit.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\miniaudio\miniaudio.h" />
     <ClInclude Include="src\shaderLoader.h" />
     <ClInclude Include="src\standardObject.h" />
     <ClInclude Include="src\stb_image\stb_image.h" />

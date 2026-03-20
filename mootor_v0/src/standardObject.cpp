@@ -307,6 +307,11 @@ combinedObject::~combinedObject()
 	//standardObject::~standardObject();
 }
 
+void combinedObject::addTextSettings(textObjectSettings* textSettings)
+{
+	this->textSettings = textSettings;
+}
+
 //method is slow, this should only be used during loading processes
 //DON'T USE IN APP LOOP, LIKELY TO KILL PERFORMANCE
 //
@@ -443,6 +448,77 @@ void combinedObject::addObjectList(standardObject** objectPointer, const unsigne
 	{
 		addObject(objectPointer[i]);
 	}
+}
+
+void combinedObject::makeText(const char* text, unsigned int textLength, bool forceClearObjectData)
+{
+	if (textSettings != NULL)
+	{
+		if (this->textSettings->width == 0 || this->textSettings->height == 0)
+		{
+			std::cout << "textSettings struct bound, but letter dimension data is not set, no changes were made to combinedObject" << std::endl;
+			return;
+		}
+		if (this->textSettings->textMapSize == 0)
+		{
+			std::cout << "textSettings struct  bound, but textMapSize not set, no changes were made to combinedObject" << std::endl;
+			return;
+		}
+		if (this->textSettings->textMapTranslation == nullptr)
+		{
+			std::cout << "textSettings struct  bound, but textMapTranslation not set, no changes were made to combinedObject" << std::endl;
+			return;
+		}
+	}
+	else
+	{
+		std::cout << "textSettings struct not bound, no changes were made to combinedObject" << std::endl;
+		return;
+	}
+
+	if (vbSize != 0 || ibSize != 0 || vbSize != 0 && ibSize != 0)
+	{
+		if (!forceClearObjectData)
+		{
+			std::cout << "Data in combinedobject, forceClearObjectData == false, no changes were made to the combinedobject." << std::endl;
+			return;
+		}
+
+		std::cout << "Data in combinedobject, forceClearObjectData == true, all previous data will be erased and text will be generated." << std::endl;
+		delete[] this->vertexBuffer;
+		delete[] this->elementBuffer;
+		this->vbSize = 0;
+		this->ibSize = 0;
+	}
+
+	int* tempTranslatedBuffer = new int[textLength] {0};
+
+	for (int i = 0; i < textLength; i++)
+	{
+		//space check
+		if (text[i] == ' ')
+		{
+			continue;
+		}
+
+		for (int j = 0; i < this->textSettings->textMapSize; i++)
+		{
+			if (text[i] == this->textSettings->textMapTranslation[j])
+			{
+				tempTranslatedBuffer[i] = j + 1;
+				break;
+			}
+		}
+
+		if (tempTranslatedBuffer[i] == 0)
+		{
+			std::cout << "Item in text buffer not found in textSettings->textMapTranslation, breaking text generation and returning with no changes." << std::endl;
+			delete[] tempTranslatedBuffer;
+			return;
+		}
+	}
+
+	delete[] tempTranslatedBuffer;
 }
 
 void combinedObject::softSwapTextureInstance(const float& tilemapNum, const unsigned int& objectNumber)

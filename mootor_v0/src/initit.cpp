@@ -140,3 +140,25 @@ int* mootor::GetWindowDimensions()
 {
 	return this->windowDimensions;
 }
+
+musicPlayer::musicPlayer()
+{
+	ma_result result;
+
+	result = ma_engine_init(NULL, &engine);
+	if (result != MA_SUCCESS) {
+		std::cout << result << std::endl;
+		std::cout << "Failed to instantiate music engine, try again in another object" << std::endl;
+		return; // Failed to initialize the engine.
+	}
+}
+
+musicPlayer::~musicPlayer()
+{
+	ma_engine_uninit(&engine);
+}
+
+void musicPlayer::playSound(const char* filepath)
+{
+	ma_engine_play_sound(&engine, filepath, NULL);
+}

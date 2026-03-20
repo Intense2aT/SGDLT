@@ -123,18 +123,30 @@ public:
 	~tilemap();
 };
 
+struct textObjectSettings
+{
+	int width = 0, height = 0;
+	int textMapSize = 0;
+	char* textMapTranslation = nullptr;
+};
+
 //combinedObject shall be able to be used to combine many singular standardObjects with the same texture map
 //into a singular object for more efficient drawing
 class combinedObject : public standardObject
 {
+private:
+	textObjectSettings* textSettings = NULL;
 public:
 	int objectAmount = 0;
 	int* objectEnds;
 
 	using standardObject::standardObject;
 	~combinedObject();
+	void addTextSettings(textObjectSettings* textSettings);
 	void addObject(standardObject* object);
 	void addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects);
+
+	void makeText(const char* text, unsigned int textLenght, bool forceClearObjectData = true);
 
 	//object number is the number of the ending in the objectEnds object endpoints list
 	//in simple terms, it is the number of objects after it was added
@@ -142,14 +154,4 @@ public:
 	//if nothing else is specified, default is 1
 	//0 will return an unhandled error and undefined behavior, don't do / fix that
 	void softSwapTextureInstance(const float& tilemapNum, const unsigned int& objectNumber = 1);
-};
-
-//class for text display in a reasonable manner
-class textObject : combinedObject
-{
-private:
-
-public:
-	//using combinedObject::standardObject;
-
 };
