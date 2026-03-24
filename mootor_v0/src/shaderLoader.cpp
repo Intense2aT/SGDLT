@@ -80,16 +80,16 @@ shaderManager::~shaderManager()
 //teeb uued shaderid tavaobjekti jaoks
 void shaderManager::UseBaseShaders()
 {
-	LoadShader("../src/shaders/vertexShader1.shader", 'V');
-	LoadShader("../src/shaders/fragmentShader1.shader", 'F');
+	LoadShader("shaders/vertexShader1.shader", 'V');
+	LoadShader("shaders/fragmentShader1.shader", 'F');
 	CreateProgram();
 	UseProgram();
 }
 
 void shaderManager::UseBaseShadersTexmap()
 {
-	LoadShader("../src/shaders/vertexShader2_tex.shader", 'V');
-	LoadShader("../src/shaders/fragmentShader2_tex.shader", 'F');
+	LoadShader("shaders/vertexShader2_tex.shader", 'V');
+	LoadShader("shaders/fragmentShader2_tex.shader", 'F');
 	CreateProgram();
 	UseProgram();
 }
