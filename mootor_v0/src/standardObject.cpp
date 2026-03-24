@@ -552,16 +552,31 @@ void combinedObject::softSwapTextureInstance(const float& tilemapNum, const unsi
 	}
 }
 
+void buttonObject::setOnHover(void(*func)(buttonObject*))
+{
+	OnHover = func;
+}
+
+void buttonObject::setOnHoverEnd(void(*func)(buttonObject*))
+{
+	OnHoverEnd = func;
+}
+
 void buttonObject::setOnClick(void(*func)(buttonObject*))
 {
 	OnClick = func;
 }
 
-bool buttonObject::checkClick(bool centerMouseCords)
+void buttonObject::setOnClickRelease(void(*func)(buttonObject*))
+{
+	OnClickRelease = func;
+}
+
+bool buttonObject::checkHover(bool centerMouseCords)
 {
 	position mouse = TMouse::GetMousePos(this->motor->window);
-	float x[2] = { this->objectPosition[0] - this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0], this->objectPosition[0] + this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0]};
-	float y[2] = { this->objectPosition[1] - this->objectDimensions[1] / 2- this->motor->GetGlobalPosition()[1], this->objectPosition[1] + this->objectDimensions[1] / 2 - this->motor->GetGlobalPosition()[1]};
+	float x[2] = { this->objectPosition[0] - this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0], this->objectPosition[0] + this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0] };
+	float y[2] = { this->objectPosition[1] - this->objectDimensions[1] / 2 - this->motor->GetGlobalPosition()[1], this->objectPosition[1] + this->objectDimensions[1] / 2 - this->motor->GetGlobalPosition()[1] };
 
 	if (centerMouseCords)
 	{
@@ -581,11 +596,42 @@ bool buttonObject::checkClick(bool centerMouseCords)
 	if (x[0] < float(mouse.xPos) && float(mouse.xPos) < x[1] &&
 		y[0] < float(mouse.yPos) && float(mouse.yPos) < y[1])
 	{
-		if (TMouse::isButtonPressed(this->motor->window, GLFW_MOUSE_BUTTON_LEFT))
+		if (!isHovering)
 		{
-			std::cout << "PRESSSSSSSSSSS\n";
-			return true;
+			isHovering = true;
+			if (OnHover != 0)
+			{
+				OnHover(this);
+			}
+			else
+			{
+				std::cout << "OnHover function for Button is not bound." << std::endl;
+			}
+		}
+
+		return true;
+	}
+	if (isHovering)
+	{
+		isHovering = false;
+		if (OnHoverEnd != 0)
+		{
+			OnHoverEnd(this);
+		}
+		else
+		{
+			std::cout << "OnHoverEnd function for Button is not bound." << std::endl;
 		}
 	}
+	return false;
+}
+
+bool buttonObject::checkClick(bool centerMouseCords, bool callOnFirstPress)
+{
+	if (this->checkHover(centerMouseCords))
+	{
+		return true;
+	}
+
 	return false;
 }

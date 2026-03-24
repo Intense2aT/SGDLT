@@ -39,7 +39,12 @@ void updateMatrixOnResize(int matrixLocation, int width, int height, float *proj
 
 void testFuncButton(buttonObject* object)
 {
-	std::cout << "test" << std::endl;
+	object->softSwapTexture(2);
+}
+
+void testFuncButton2(buttonObject* object)
+{
+	object->softSwapTexture(1);
 }
 
 int main()
@@ -78,22 +83,23 @@ int main()
 	
 	standardObject objectOne(-0.0f, 0.0f, &mootor ,true);
 	objectOne.MakeCircle(radius);
-	objectOne.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	objectOne.addTexture("textures/heartPixel1.png", 1, 1, 1);
 	
 	standardObject objectTwo(0.0f, 0.0f, &mootor, true);
 	objectTwo.MakeSquare(radius, radius);
-	objectTwo.addTexture("src/textures/heartPixel1.png", 1, 1, 1);
+	objectTwo.addTexture("textures/heartPixel1.png", 1, 1, 1);
 
 	float vec[2] = { 100, 100 };
 	objectTwo.MoveObject(vec);
 
 	buttonObject objectThree(0.0f, 0.0f, &mootor, true);
 	objectThree.MakeSquare(radius, radius);
-	objectThree.addTexture("src/textures/tähestik_v1.png", 10, 4, 40);
+	objectThree.addTexture("textures/texmap1.png", 2, 1, 2);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//objectThree.MoveObject(vec);
+	objectThree.MoveObject(vec);
 	//should work
-	objectThree.setOnClick(testFuncButton);
+	objectThree.setOnHover(testFuncButton);
+	objectThree.setOnHoverEnd(testFuncButton2);
 	/*
 	standardObject objectFour(100.0f, -100.0f, &mootor, true);
 	objectFour.MakeSquare(radius, radius);
@@ -113,7 +119,7 @@ int main()
 
 
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
-	combObject.addTexture("src/textures/texmap1.png", 2, 1, 2);
+	combObject.addTexture("textures/texmap1.png", 2, 1, 2);
 	
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
@@ -131,7 +137,7 @@ int main()
 
 	float position[2] = { -540, 260 };
 	tilemap map(100, 50, 50, position);
-	map.addTexture("src/textures/texmap1.png", 2, 2, 4);
+	map.addTexture("textures/texmap1.png", 2, 2, 4);
 	//map.addTexture("src/textures/simpleCandle1.jpg", 1, 1, 1);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -155,7 +161,7 @@ int main()
 	int x = 0;
 	*/
 	musicPlayer music;
-	music.playSound("C:/Users/laur/source/repos/Intense2aT/SGDLT/mootor_v0/src/sounds/testMusicNotMine.wav");
+	music.playSound("sounds/testMusicNotMine.wav");
 
 	while (!glfwWindowShouldClose(mootor.window))
 	{
@@ -183,7 +189,7 @@ int main()
 			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0], mootor.GetGlobalPosition()[1] + 5);
 		}
 
-		objectThree.checkClick();
+		objectThree.checkHover();
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
@@ -200,17 +206,19 @@ int main()
 		//objectTwo.Draw(base);
 		//objectThree.softSwapTexture(float(int(mootor.getTime()) % 40 + 1));
 		//std::cout << int(mootor.getTime()) % 40 + 1 << std::endl;
-		//objectThree.Draw(base);
-		
+		float vecto[2] = { 0.1f, 0.0f };
+		objectThree.MoveObject(vecto);
+		objectThree.Draw(base);
+
 		/*
 		objectFour.Draw(base);
 		objectFive.Draw(base);
 		*/
-		combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 2);
-		combObject.RotateObject(0.04f);
-		float vecto[2] = { 0.1f, 0.0f };
-		combObject.MoveObject(vecto);
-		combObject.Draw(base);
+		//combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 2);
+		//combObject.RotateObject(0.04f);
+		//float vecto[2] = { 0.1f, 0.0f };
+		//combObject.MoveObject(vecto);
+		//combObject.Draw(base);
 
 		/* Swap front and back buffers */
 		glfwSwapInterval(0); //kuradima vsync

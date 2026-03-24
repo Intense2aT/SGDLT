@@ -79,15 +79,25 @@ public:
 class buttonObject : public standardObject
 {
 private:
+	bool isHovering = false;
+	bool isClicking = false;
+
+	void (*OnHover)(buttonObject*) = 0;
+	void (*OnHoverEnd)(buttonObject*) = 0;
 	void (*OnClick)(buttonObject*) = 0;
+	void (*OnClickRelease)(buttonObject*) = 0;
 public:
 	using standardObject::standardObject;
 
+	void setOnHover(void (*func)(buttonObject*));
+	void setOnHoverEnd(void (*func)(buttonObject*));
 	void setOnClick(void (*func)(buttonObject*));
+	void setOnClickRelease(void (*func)(buttonObject*));
 
 	//detecting mouse collision while clicking
 	//assumption is that the button is a rectangle
-	bool checkClick(bool centerMouseCords = true);
+	bool checkHover(bool centerMouseCords = true);
+	bool checkClick(bool centerMouseCords = true, bool callOnFirstPress = true);
 };
 
 class playerObject : public standardObject
