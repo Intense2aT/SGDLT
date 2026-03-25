@@ -1,11 +1,19 @@
-Testime prod'is.
+Tegu on tudengi projekti raames vabavaraga (vaata litsentsi rohkema info jaoks).
 
-Olemas:
-- okei hulk asju
+LITSENTS KEHTIB VAID MINU LOODUD KOODI KOHTA NING KASUTATUD LIBRARITEL VÕIVAD OLLA ERINEVAD NÕUDED.
+PALUN TUTVUGE ENNE KASUTATUD LIBRARITEGA.
+- GLFW
+- GLEW
+- OPENGL
+- stbImage
+- miniaudio
 
-Vaja:
-- palju palju veel aga selliste projektidega on alati nii
+This is freeware made for a student project (look at licence for more info about usage limits).
 
-See projekt on vabavara ja igasugune minu loodud kood siin repo's on kõigile vabalt kasutatav.
-See aga tähendab, et ma ei anna minisuguseid garantiisid ning kasutaja vastutab ise selle kasutamise eest.
-Aitäh :D
+THE LICENCE ONLY APPLIES TO THE CODE CREATED BY ME OR ANY OTHER CONTRIBUTORS TO THIS REPOSITORY, OTHER USED LIBRARIES MAY HAVE DIFFERENT RESTRICIONS.
+PLEASE FAMILIARAISE YOURSELF WITH THE USED LIBRARIES BEFORE USAGE.
+- GLFW
+- GLEW
+- OPENGL
+- stbImage
+- miniaudio
