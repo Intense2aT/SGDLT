@@ -100,6 +100,8 @@ int main()
 	//should work
 	objectThree.setOnHover(testFuncButton);
 	objectThree.setOnHoverEnd(testFuncButton2);
+	objectThree.setOnClick(testFuncButton);
+	objectThree.setOnClickRelease(testFuncButton2);
 	/*
 	standardObject objectFour(100.0f, -100.0f, &mootor, true);
 	objectFour.MakeSquare(radius, radius);
@@ -189,7 +191,7 @@ int main()
 			mootor.SetGlobalPosition(mootor.GetGlobalPosition()[0], mootor.GetGlobalPosition()[1] + 5);
 		}
 
-		objectThree.checkHover();
+		objectThree.checkClick();
 
 		/* Render here */
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
@@ -207,7 +209,7 @@ int main()
 		//objectThree.softSwapTexture(float(int(mootor.getTime()) % 40 + 1));
 		//std::cout << int(mootor.getTime()) % 40 + 1 << std::endl;
 		float vecto[2] = { 0.1f, 0.0f };
-		objectThree.MoveObject(vecto);
+		//objectThree.MoveObject(vecto);
 		objectThree.Draw(base);
 
 		/*

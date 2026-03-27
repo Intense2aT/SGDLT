@@ -96,8 +96,15 @@ public:
 
 	//detecting mouse collision while clicking
 	//assumption is that the button is a rectangle
-	bool checkHover(bool centerMouseCords = true);
-	bool checkClick(bool centerMouseCords = true, bool callOnFirstPress = true);
+	// -------------
+	// - centerMouseCords fixes some math to make detectin work, should not be changed under normal circumstances
+	// - callOnFirst(Press/Hover) calls the bound functions On(Hover/Click) only on first instance of given behavior
+	//		#Behavior of the hoverEnd and clickRelease callback calling by the button will not be changed by the given variable
+	// - doNotCallFunctions is meant for the case  when one wants to just know if either hover or click is happening, therefore the callbacks bound to the button are not called
+	// -------------
+	// check(Click/Hover) will continuously return true while the button is being pressed/hovered on, this behavior is not modified by callOnFirstPress
+	bool checkHover(bool centerMouseCords = true, bool callOnFirstHover = false, bool doNotCallFunctions = false);
+	bool checkClick(bool centerMouseCords = true, bool callOnFirstPress = true, bool doNotCallFunctions = false);
 };
 
 class playerObject : public standardObject

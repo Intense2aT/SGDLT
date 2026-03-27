@@ -572,7 +572,7 @@ void buttonObject::setOnClickRelease(void(*func)(buttonObject*))
 	OnClickRelease = func;
 }
 
-bool buttonObject::checkHover(bool centerMouseCords)
+bool buttonObject::checkHover(bool centerMouseCords, bool callOnFirstHover, bool doNotCallFunctions)
 {
 	position mouse = TMouse::GetMousePos(this->motor->window);
 	float x[2] = { this->objectPosition[0] - this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0], this->objectPosition[0] + this->objectDimensions[0] / 2 - this->motor->GetGlobalPosition()[0] };
@@ -596,26 +596,51 @@ bool buttonObject::checkHover(bool centerMouseCords)
 	if (x[0] < float(mouse.xPos) && float(mouse.xPos) < x[1] &&
 		y[0] < float(mouse.yPos) && float(mouse.yPos) < y[1])
 	{
-		if (!isHovering)
+		if (!doNotCallFunctions)
 		{
-			isHovering = true;
-			if (OnHover != 0)
+			if (callOnFirstHover)
 			{
-				OnHover(this);
+				if (OnHover != 0 && !isHovering)
+				{
+					std::cout << "calling OnHover" << std::endl;
+					OnHover(this);
+				}
+				else if (OnHover != 0 && isHovering)
+				{
+					//std::cout << "nothing happening" << std::endl;
+				}
+				else 
+				{
+					std::cout << "OnHover function for Button is not bound." << std::endl;
+				}
 			}
 			else
 			{
-				std::cout << "OnHover function for Button is not bound." << std::endl;
+				if (OnHover != 0)
+				{
+					std::cout << "calling OnHover" << std::endl;
+					OnHover(this);
+				}
+				else
+				{
+					std::cout << "OnHover function for Button is not bound." << std::endl;
+				}
+			}
+
+			if (!isHovering)
+			{
+				isHovering = true;
 			}
 		}
 
 		return true;
 	}
-	if (isHovering)
+	else if (isHovering)
 	{
 		isHovering = false;
 		if (OnHoverEnd != 0)
 		{
+			std::cout << "calling OnHoverEnd" << std::endl;
 			OnHoverEnd(this);
 		}
 		else
@@ -626,11 +651,61 @@ bool buttonObject::checkHover(bool centerMouseCords)
 	return false;
 }
 
-bool buttonObject::checkClick(bool centerMouseCords, bool callOnFirstPress)
+bool buttonObject::checkClick(bool centerMouseCords, bool callOnFirstPress, bool doNotCallFunctions)
 {
-	if (this->checkHover(centerMouseCords))
+	if (this->checkHover(centerMouseCords, false, true) && TMouse::isButtonPressed(this->motor->window, GLFW_MOUSE_BUTTON_LEFT))
 	{
+		if (!doNotCallFunctions)
+		{
+			if (callOnFirstPress)
+			{
+				if (OnClick != 0 && !isClicking)
+				{
+					std::cout << "calling OnClick" << std::endl;
+					OnClick(this);
+				}
+				else if (OnClick != 0 && isClicking)
+				{
+					//std::cout << "nothing happening" << std::endl;
+				}
+				else
+				{
+					std::cout << "OnClick function for Button is not bound." << std::endl;
+				}
+			}
+			else
+			{
+				if (OnClick != 0)
+				{
+					std::cout << "calling OnClick" << std::endl;
+					OnClick(this);
+				}
+				else
+				{
+					std::cout << "OnClick function for Button is not bound." << std::endl;
+				}
+			}
+
+			if (!isClicking)
+			{
+				isClicking = true;
+			}
+		}
+		
 		return true;
+	}
+	else if (isClicking)
+	{
+		isClicking = false;
+		if (OnClickRelease != 0)
+		{
+			std::cout << "calling OnClickRelease" << std::endl;
+			OnClickRelease(this);
+		}
+		else
+		{
+			std::cout << "OnClickRelease function for Button is not bound." << std::endl;
+		}
 	}
 
 	return false;
