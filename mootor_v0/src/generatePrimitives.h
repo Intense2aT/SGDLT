@@ -11,3 +11,4 @@ bufferSizeStore genTriangle(bool generateTextured, float*& vertexArray, unsigned
 int calcCircleVBufferSize(float degreesPerTriangle);
 bufferSizeStore genCircle(bool generateTextured, float*& vertexArray, unsigned int*& indexArray, float triangleDegrees, float radius, float xpos, float ypos);
 bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, int tilemap_width, int tilemap_height, int tileside_pixels, float position[2]);
+bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& letterWidth, float& letterHeight, float* padding, int* translatedTextArray, unsigned int& arraySize, float xpos, float ypos);

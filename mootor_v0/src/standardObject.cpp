@@ -493,7 +493,7 @@ void combinedObject::makeText(const char* text, unsigned int textLength, bool fo
 
 	int* tempTranslatedBuffer = new int[textLength] {0};
 
-	for (int i = 0; i < textLength; i++)
+	for (unsigned int i = 0; i < textLength; i++)
 	{
 		//space check
 		if (text[i] == ' ')
@@ -501,7 +501,13 @@ void combinedObject::makeText(const char* text, unsigned int textLength, bool fo
 			continue;
 		}
 
-		for (int j = 0; i < this->textSettings->textMapSize; i++)
+		if (text[i] == '\n')
+		{
+			tempTranslatedBuffer[i] = -1;  
+			continue;
+		}
+
+		for (int j = 0; j < this->textSettings->textMapSize; j++)
 		{
 			if (text[i] == this->textSettings->textMapTranslation[j])
 			{
@@ -517,6 +523,12 @@ void combinedObject::makeText(const char* text, unsigned int textLength, bool fo
 			return;
 		}
 	}
+
+	float padding[2] = { this->textSettings->horisontalPadding, this->textSettings->verticalPadding };
+	bufferSizeStore bufferSizes = genText(this->vertexBuffer, this->elementBuffer, this->textSettings->height, this->textSettings->width, padding, tempTranslatedBuffer, textLength, this->objectPosition[0], this->objectPosition[1]);
+	vbSize = bufferSizes.vertexBufferSize;
+	ibSize = bufferSizes.elementBufferSize;
+	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
 
 	delete[] tempTranslatedBuffer;
 }

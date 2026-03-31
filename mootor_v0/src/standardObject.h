@@ -142,9 +142,13 @@ public:
 
 struct textObjectSettings
 {
-	int width = 0, height = 0;
+	float width = 0, height = 0;
 	int textMapSize = 0;
-	char* textMapTranslation = nullptr;
+	const char* textMapTranslation = nullptr;
+
+	//optional values
+	float verticalPadding = 0;
+	float horisontalPadding = 0;
 };
 
 //combinedObject shall be able to be used to combine many singular standardObjects with the same texture map

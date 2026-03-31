@@ -371,3 +371,109 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 
 	return FML;
 }
+
+bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& letterWidth, float& letterHeight, float* padding, int* translatedTextArray, unsigned int& arraySize, float xpos, float ypos)
+{
+	bufferSizeStore bufferSizes;
+	bufferSizes.vertexBufferSize = 6 * 4 * arraySize;
+	bufferSizes.elementBufferSize = 3 * 2 * arraySize;
+
+	float* tempVertexBuffer = new float[bufferSizes.vertexBufferSize];
+	unsigned int* tempIndexBuffer = new unsigned int[bufferSizes.elementBufferSize];
+
+	float currentLetterTopLeft[2] = { xpos, ypos };
+	int letterCount = 0;
+	for (int i = 0; i < arraySize; i++)
+	{
+		if (translatedTextArray[i] == 0)
+		{
+			currentLetterTopLeft[0] += letterWidth;
+			//padding
+			currentLetterTopLeft[0] += padding[0];
+		}
+		else if (translatedTextArray[i] == -1)
+		{
+			currentLetterTopLeft[0] = xpos;
+			currentLetterTopLeft[1] -= letterHeight;
+			//padding
+			currentLetterTopLeft[1] -= padding[1];
+		}
+		else 
+		{
+			//top left
+			tempVertexBuffer[letterCount * 4 * 6] = currentLetterTopLeft[0];
+			tempVertexBuffer[letterCount * 4 * 6 + 1] = currentLetterTopLeft[1];
+			tempVertexBuffer[letterCount * 4 * 6 + 2] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 3] = 0.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 4] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 5] = translatedTextArray[i];
+
+			//bottom left
+			tempVertexBuffer[letterCount * 4 * 6 + 6] = currentLetterTopLeft[0];
+			tempVertexBuffer[letterCount * 4 * 6 + 7] = currentLetterTopLeft[1] - letterHeight;
+			tempVertexBuffer[letterCount * 4 * 6 + 8] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 9] = 0.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 10] = 0.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 11] = translatedTextArray[i];
+
+			//top right
+			tempVertexBuffer[letterCount * 4 * 6 + 12] = currentLetterTopLeft[0] + letterWidth;
+			tempVertexBuffer[letterCount * 4 * 6 + 13] = currentLetterTopLeft[1];
+			tempVertexBuffer[letterCount * 4 * 6 + 14] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 15] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 16] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 17] = translatedTextArray[i];
+
+			//bottom right
+			tempVertexBuffer[letterCount * 4 * 6 + 18] = currentLetterTopLeft[0] + letterWidth;
+			tempVertexBuffer[letterCount * 4 * 6 + 19] = currentLetterTopLeft[1] - letterHeight;
+			tempVertexBuffer[letterCount * 4 * 6 + 20] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 21] = 1.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 22] = 0.0f;
+			tempVertexBuffer[letterCount * 4 * 6 + 23] = translatedTextArray[i];
+
+			tempIndexBuffer[letterCount * 3 * 2] = letterCount * 4;
+			tempIndexBuffer[letterCount * 3 * 2 + 1] = letterCount * 4 + 1;
+			tempIndexBuffer[letterCount * 3 * 2 + 2] = letterCount * 4 + 2;
+			tempIndexBuffer[letterCount * 3 * 2 + 3] = letterCount * 4 + 2;
+			tempIndexBuffer[letterCount * 3 * 2 + 4] = letterCount * 4 + 3;
+			tempIndexBuffer[letterCount * 3 * 2 + 5] = letterCount * 4 + 1;
+
+			currentLetterTopLeft[0] += letterWidth;
+			currentLetterTopLeft[0] += padding[0];
+			letterCount++;
+		}
+	}
+
+	bufferSizes.vertexBufferSize = letterCount * 4 * 6;
+	bufferSizes.elementBufferSize = letterCount * 3 * 2;
+
+	std::cout << bufferSizes.vertexBufferSize << " " << bufferSizes.elementBufferSize << std::endl;
+
+	vertexArray = new float[bufferSizes.vertexBufferSize];
+	indexArray = new unsigned int[bufferSizes.elementBufferSize];
+
+	for (int i = 0; i < bufferSizes.vertexBufferSize; i++)
+	{
+		vertexArray[i] = tempVertexBuffer[i];
+		std::cout << vertexArray[i] << " ";
+		if ((i + 1) % 6 == 0)
+		{
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < bufferSizes.elementBufferSize; i++)
+	{
+		indexArray[i] = tempIndexBuffer[i];
+		std::cout << indexArray[i] << " ";
+		if ((i + 1) % 3 == 0)
+		{
+			std::cout << std::endl;
+		}
+	}
+
+	return bufferSizes;
+}

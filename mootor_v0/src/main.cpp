@@ -117,7 +117,7 @@ int main()
 	standardList[2] = &objectThree;
 	standardList[3] = &objectFour;
 	standardList[4] = &objectFive;
-	*/
+	
 
 
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
@@ -127,7 +127,7 @@ int main()
 	combObject.addObject(&objectTwo);
 	float vect[2] = { -720.0f, 0.0f };
 	combObject.MoveObject(vect);
-	/*
+	
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
 	combObject.addObject(&objectFive);
@@ -135,6 +135,20 @@ int main()
 	combObject.addObjectList(standardList, 5);
 	delete[] standardList;
 	*/
+	textObjectSettings textSettings;
+	textSettings.height = 30;
+	textSettings.width = 30;
+	textSettings.textMapSize = 40;
+	textSettings.verticalPadding = 5;
+	textSettings.horisontalPadding = -3;
+	const char* translation = "abcdefghijklmnopqrsztuvwxy.-!?1234567890";
+	textSettings.textMapTranslation = translation;
+
+	combinedObject textobject(-0.0f, 0.0f, &mootor, true);
+	textobject.addTextSettings(&textSettings);
+	textobject.addTexture("textures/tähestik_v1.png", 10, 4, 40);
+	textobject.makeText("hello world!\nit wurk", 20);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	float position[2] = { -540, 260 };
@@ -211,6 +225,7 @@ int main()
 		float vecto[2] = { 0.1f, 0.0f };
 		//objectThree.MoveObject(vecto);
 		objectThree.Draw(base);
+		textobject.Draw(base);
 
 		/*
 		objectFour.Draw(base);
