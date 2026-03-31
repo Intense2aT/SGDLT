@@ -372,7 +372,7 @@ bufferSizeStore genTileMap(float*& tilemap_buffer, unsigned int*& index_buffer, 
 	return FML;
 }
 
-bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& letterWidth, float& letterHeight, float* padding, int* translatedTextArray, unsigned int& arraySize, float xpos, float ypos)
+bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& letterWidth, float& letterHeight, float* padding, int* translatedTextArray, unsigned int& arraySize, float xpos, float ypos, int& setObjectAmount, int*& objectEnds)
 {
 	bufferSizeStore bufferSizes;
 	bufferSizes.vertexBufferSize = 6 * 4 * arraySize;
@@ -448,19 +448,29 @@ bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& l
 	bufferSizes.vertexBufferSize = letterCount * 4 * 6;
 	bufferSizes.elementBufferSize = letterCount * 3 * 2;
 
-	std::cout << bufferSizes.vertexBufferSize << " " << bufferSizes.elementBufferSize << std::endl;
+	//std::cout << bufferSizes.vertexBufferSize << " " << bufferSizes.elementBufferSize << std::endl;
 
 	vertexArray = new float[bufferSizes.vertexBufferSize];
 	indexArray = new unsigned int[bufferSizes.elementBufferSize];
-
+	
+	setObjectAmount = letterCount;
+	objectEnds = new int[letterCount];
+	for (int i = 0; i < letterCount; i++)
+	{
+		objectEnds[i] = (i + 1) * 24;
+	}
+	//system("pause");
+	 
 	for (int i = 0; i < bufferSizes.vertexBufferSize; i++)
 	{
 		vertexArray[i] = tempVertexBuffer[i];
+		/*
 		std::cout << vertexArray[i] << " ";
 		if ((i + 1) % 6 == 0)
 		{
 			std::cout << std::endl;
 		}
+		*/
 	}
 
 	std::cout << std::endl;
@@ -468,12 +478,17 @@ bufferSizeStore genText(float*& vertexArray, unsigned int*& indexArray, float& l
 	for (int i = 0; i < bufferSizes.elementBufferSize; i++)
 	{
 		indexArray[i] = tempIndexBuffer[i];
+		/*
 		std::cout << indexArray[i] << " ";
 		if ((i + 1) % 3 == 0)
 		{
 			std::cout << std::endl;
 		}
+		*/
 	}
 
+	delete[] tempVertexBuffer;
+	delete[] tempIndexBuffer;
+	
 	return bufferSizes;
 }

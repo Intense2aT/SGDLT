@@ -119,15 +119,16 @@ int main()
 	standardList[4] = &objectFive;
 	
 
-
+	*/
 	combinedObject combObject(-0.0f, 0.0f, &mootor, true);
 	combObject.addTexture("textures/texmap1.png", 2, 1, 2);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
 	combObject.addObject(&objectOne);
 	combObject.addObject(&objectTwo);
-	float vect[2] = { -720.0f, 0.0f };
+	float vect[2] = { -300.0f, 0.0f };
 	combObject.MoveObject(vect);
-	
+	/*
 	combObject.addObject(&objectThree);
 	combObject.addObject(&objectFour);
 	combObject.addObject(&objectFive);
@@ -225,14 +226,16 @@ int main()
 		float vecto[2] = { 0.1f, 0.0f };
 		//objectThree.MoveObject(vecto);
 		objectThree.Draw(base);
+		textobject.softSwapTextureInstance(float(int(mootor.getTime()) % 40 + 1), 1);
 		textobject.Draw(base);
 
 		/*
 		objectFour.Draw(base);
 		objectFive.Draw(base);
 		*/
-		//combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 2);
-		//combObject.RotateObject(0.04f);
+		combObject.Draw(base);
+		combObject.softSwapTextureInstance(float(int(mootor.getTime()) % 2 + 1), 1);
+		//combObject.RotateObject(0.02f);
 		//float vecto[2] = { 0.1f, 0.0f };
 		//combObject.MoveObject(vecto);
 		//combObject.Draw(base);
@@ -263,8 +266,8 @@ int main()
 
 	//std::cout << "\n" << "average fps was: " << magic / ticks << "\n";
 
-	base.Destroy();
-	mootor.Destroy();
+	//base.Destroy();
+	//mootor.Destroy();
 	return 0;
 }
 

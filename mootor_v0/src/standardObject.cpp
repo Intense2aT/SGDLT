@@ -219,7 +219,7 @@ tilemap::tilemap(int tileside_pixels, int tilemap_width, int tilemap_height, flo
 
 
 	std::cout << magicint << " " << ibSize / sizeof(unsigned int) / 6 << '\n';
-	system("pause");
+	//system("pause");
 }
 
 void tilemap::addTexture(const char* filepath, int texmap_width, int texmap_height, int items_in_map)
@@ -348,7 +348,7 @@ void combinedObject::addObject(standardObject* object)
 		vbSize += object->vbSize;
 		ibSize += object->ibSize;
 		std::cout << "combinedObject: " << vbSize << " " << ibSize << " now is\n";
-		system("pause");
+		//system("pause");
 
 		float* tempVertBuffer = new float[vbSize] {0};
 		unsigned int* tempIndexBuffer = new unsigned int[ibSize] {0};
@@ -439,7 +439,7 @@ void combinedObject::addObject(standardObject* object)
 	}
 
 	std::cout << vbSize << " " << ibSize << " <- vertexBufferSize and indexBufferSize!" << std::endl;
-	system("pause");
+	//system("pause");
 }
 
 void combinedObject::addObjectList(standardObject** objectPointer, const unsigned int& numberOfObjects)
@@ -525,7 +525,7 @@ void combinedObject::makeText(const char* text, unsigned int textLength, bool fo
 	}
 
 	float padding[2] = { this->textSettings->horisontalPadding, this->textSettings->verticalPadding };
-	bufferSizeStore bufferSizes = genText(this->vertexBuffer, this->elementBuffer, this->textSettings->height, this->textSettings->width, padding, tempTranslatedBuffer, textLength, this->objectPosition[0], this->objectPosition[1]);
+	bufferSizeStore bufferSizes = genText(this->vertexBuffer, this->elementBuffer, this->textSettings->height, this->textSettings->width, padding, tempTranslatedBuffer, textLength, this->objectPosition[0], this->objectPosition[1], this->objectAmount, this->objectEnds);
 	vbSize = bufferSizes.vertexBufferSize;
 	ibSize = bufferSizes.elementBufferSize;
 	addData(vertexBuffer, bufferSizes.vertexBufferSize * sizeof(float), elementBuffer, bufferSizes.elementBufferSize * sizeof(unsigned int));
@@ -551,7 +551,7 @@ void combinedObject::softSwapTextureInstance(const float& tilemapNum, const unsi
 
 		bounds[1] = this->objectEnds[objectNumber - 1] / 6;
 	
-		for (int i = bounds[0]; i <= bounds[1]; i++)
+		for (int i = bounds[0] + 1; i <= bounds[1]; i++)
 		{
 			vertexBuffer[i * 6 - 1] = tilemapNum;
 		}
